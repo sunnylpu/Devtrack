@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7
+    container_name: devtrack_mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: devtrack_pro
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - devtrack_net
+
+  redis:
+    image: redis:7-alpine
+    container_name: devtrack_redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - devtrack_net
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: devtrack_backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 5001
+      MONGO_URI: mongodb://mongodb:27017/devtrack_pro
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+      JWT_EXPIRES_IN: 15m
+      JWT_REFRESH_EXPIRES_IN: 7d
+      FRONTEND_URL: http://localhost
+      GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
+      GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}
+      GITHUB_CALLBACK_URL: http://localhost/api/github/callback
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+    ports:
+      - "5001:5001"
+    depends_on:
+      - mongodb
+      - redis
+    networks:
+      - devtrack_net
+    volumes:
+      - ./backend/logs:/app/logs
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: devtrack_frontend
+    restart: unless-stopped
+    networks:
+      - devtrack_net
+
+  nginx:
+    image: nginx:alpine
+    container_name: devtrack_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - devtrack_net
+
+volumes:
+  mongo_data:
+  redis_data:
+
+networks:
+  devtrack_net:
+    driver: bridge
