@@ -3,13 +3,18 @@ import { useAuthStore } from '../store/authStore';
 
 let socket = null;
 
+const getSocketUrl = () => {
+  if (import.meta.env.VITE_SOCKET_URL) return import.meta.env.VITE_SOCKET_URL;
+  return import.meta.env.DEV ? 'http://localhost:5001' : '/';
+};
+
 export const getSocket = () => socket;
 
 export const connectSocket = () => {
   const token = useAuthStore.getState().accessToken;
   if (!token || socket?.connected) return;
 
-  socket = io('/', {
+  socket = io(getSocketUrl(), {
     auth: { token },
     transports: ['websocket', 'polling'],
     reconnection: true,

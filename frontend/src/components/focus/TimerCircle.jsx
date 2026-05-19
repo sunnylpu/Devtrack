@@ -8,7 +8,7 @@ export default function TimerCircle({ timeLeft, total, color, label }) {
   return (
     <div className="relative flex items-center justify-center">
       <svg width="280" height="280" viewBox="0 0 280 280">
-        <circle cx="140" cy="140" r="120" fill="none" stroke="#1c2236" strokeWidth="8" />
+        <circle cx="140" cy="140" r="120" fill="none" stroke="var(--surface-2)" strokeWidth="8" />
         <circle
           cx="140" cy="140" r="120"
           fill="none"
@@ -24,7 +24,7 @@ export default function TimerCircle({ timeLeft, total, color, label }) {
       <div className="absolute flex flex-col items-center">
         <div
           className="text-6xl font-bold tracking-tight mb-1"
-          style={{ color: '#e2e8f0', fontFamily: "'JetBrains Mono', monospace" }}
+          style={{ color: 'var(--text)', fontFamily: "'JetBrains Mono', monospace" }}
         >
           {mins}:{secs}
         </div>

@@ -8,17 +8,17 @@ import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { useRealTimeBoard } from '../hooks/useSocket';
 
 const COLUMNS = [
-  { id: 'todo', label: 'To Do', color: '#64748b' },
-  { id: 'in-progress', label: 'In Progress', color: '#60a5fa' },
+  { id: 'todo', label: 'To Do', color: '#71717a' },
+  { id: 'in-progress', label: 'In Progress', color: 'var(--accent-2)' },
   { id: 'review', label: 'Review', color: '#c084fc' },
-  { id: 'completed', label: 'Completed', color: '#4ade80' },
+  { id: 'completed', label: 'Completed', color: 'var(--success)' },
 ];
 
 const PRIORITY_STYLES = {
-  urgent: { bg: 'rgba(248,113,113,0.1)', color: '#f87171' },
-  high: { bg: 'rgba(251,146,60,0.1)', color: '#fb923c' },
-  medium: { bg: 'rgba(250,204,21,0.1)', color: '#facc15' },
-  low: { bg: 'rgba(74,222,128,0.1)', color: '#4ade80' },
+  urgent: { bg: 'rgba(248,113,113,0.1)', color: 'var(--danger)' },
+  high: { bg: 'rgba(251,146,60,0.1)', color: 'var(--warning)' },
+  medium: { bg: 'rgba(250,204,21,0.1)', color: 'var(--warning)' },
+  low: { bg: 'rgba(74,222,128,0.1)', color: 'var(--success)' },
 };
 
 function TaskCard({ task, onStatusChange, onDelete }) {
@@ -28,18 +28,18 @@ function TaskCard({ task, onStatusChange, onDelete }) {
   return (
     <div
       className="rounded-xl p-4 mb-3 cursor-pointer card-hover"
-      style={{ background: '#1c2236', border: '1px solid #2a3250' }}
+      style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}
     >
       <div className="flex items-start justify-between mb-2">
-        <h4 className="text-sm font-semibold leading-tight flex-1 pr-2" style={{ color: '#e2e8f0' }}>
+        <h4 className="text-sm font-semibold leading-tight flex-1 pr-2" style={{ color: 'var(--text)' }}>
           {task.title}
         </h4>
         <button
           onClick={() => onDelete(task._id)}
           className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded hover:bg-red-500/10"
-          style={{ color: '#566082' }}
-          onMouseEnter={e => e.currentTarget.style.color = '#f87171'}
-          onMouseLeave={e => e.currentTarget.style.color = '#566082'}
+          style={{ color: 'var(--subtle)' }}
+          onMouseEnter={e => e.currentTarget.style.color = 'var(--danger)'}
+          onMouseLeave={e => e.currentTarget.style.color = 'var(--subtle)'}
         >
           <Trash2 size={13} />
         </button>
@@ -49,7 +49,7 @@ function TaskCard({ task, onStatusChange, onDelete }) {
       {task.tags?.length > 0 && (
         <div className="flex flex-wrap gap-1 mb-3">
           {task.tags.slice(0, 3).map(t => (
-            <span key={t} className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'rgba(59,109,251,0.15)', color: '#3b6dfb' }}>
+            <span key={t} className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'var(--accent-soft)', color: 'var(--accent)' }}>
               {t}
             </span>
           ))}
@@ -59,14 +59,14 @@ function TaskCard({ task, onStatusChange, onDelete }) {
       {/* Subtask progress */}
       {task.subtasks?.length > 0 && (
         <div className="mb-3">
-          <div className="flex justify-between text-xs mb-1" style={{ color: '#566082' }}>
+          <div className="flex justify-between text-xs mb-1" style={{ color: 'var(--subtle)' }}>
             <span>Subtasks</span>
             <span>{progress}%</span>
           </div>
-          <div className="h-1.5 rounded-full" style={{ background: '#2a3250' }}>
+          <div className="h-1.5 rounded-full" style={{ background: 'var(--border)' }}>
             <div
               className="h-full rounded-full transition-all"
-              style={{ width: `${progress}%`, background: 'linear-gradient(90deg, #3b6dfb, #7c3aed)' }}
+              style={{ width: `${progress}%`, background: 'linear-gradient(90deg, var(--accent), var(--accent-strong))' }}
             />
           </div>
         </div>
@@ -80,7 +80,7 @@ function TaskCard({ task, onStatusChange, onDelete }) {
           {task.priority}
         </span>
         {task.deadline && (
-          <div className="flex items-center gap-1 text-xs" style={{ color: '#566082' }}>
+          <div className="flex items-center gap-1 text-xs" style={{ color: 'var(--subtle)' }}>
             <Clock size={11} />
             {format(new Date(task.deadline), 'MMM d')}
           </div>
@@ -95,9 +95,9 @@ function TaskCard({ task, onStatusChange, onDelete }) {
             onStatusChange(task._id, next[task.status]);
           }}
           className="mt-3 w-full text-xs py-1.5 rounded-lg flex items-center justify-center gap-1 transition-all"
-          style={{ background: '#2a3250', color: '#566082' }}
-          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(59,109,251,0.15)'; e.currentTarget.style.color = '#3b6dfb'; }}
-          onMouseLeave={e => { e.currentTarget.style.background = '#2a3250'; e.currentTarget.style.color = '#566082'; }}
+          style={{ background: 'var(--border)', color: 'var(--subtle)' }}
+          onMouseEnter={e => { e.currentTarget.style.background = 'var(--accent-soft)'; e.currentTarget.style.color = 'var(--accent)'; }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'var(--border)'; e.currentTarget.style.color = 'var(--subtle)'; }}
         >
           <ChevronRight size={12} /> Move Forward
         </button>
@@ -144,18 +144,18 @@ function AddTaskModal({ onClose, onAdd }) {
     <div className="fixed inset-0 flex items-center justify-center z-50 p-4" style={{ background: 'rgba(0,0,0,0.7)' }}>
       <div
         className="w-full max-w-md rounded-2xl p-6 animate-fade-in"
-        style={{ background: '#141827', border: '1px solid #2a3250' }}
+        style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
       >
-        <h3 className="text-lg font-bold mb-5" style={{ color: '#e2e8f0' }}>Create New Task</h3>
+        <h3 className="text-lg font-bold mb-5" style={{ color: 'var(--text)' }}>Create New Task</h3>
         <div className="space-y-4">
           <input
             value={title}
             onChange={e => setTitle(e.target.value)}
             placeholder="Task title..."
             className="w-full px-4 py-3 rounded-xl text-sm outline-none"
-            style={{ background: '#1c2236', border: '1px solid #2a3250', color: '#e2e8f0' }}
-            onFocus={e => e.target.style.borderColor = '#3b6dfb'}
-            onBlur={e => e.target.style.borderColor = '#2a3250'}
+            style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--text)' }}
+            onFocus={e => e.target.style.borderColor = 'var(--accent)'}
+            onBlur={e => e.target.style.borderColor = 'var(--border)'}
           />
 
           <div className="grid grid-cols-2 gap-3">
@@ -163,7 +163,7 @@ function AddTaskModal({ onClose, onAdd }) {
               value={priority}
               onChange={e => setPriority(e.target.value)}
               className="px-3 py-2.5 rounded-xl text-sm outline-none"
-              style={{ background: '#1c2236', border: '1px solid #2a3250', color: '#e2e8f0' }}
+              style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--text)' }}
             >
               {['urgent', 'high', 'medium', 'low'].map(p => (
                 <option key={p} value={p}>{p.charAt(0).toUpperCase() + p.slice(1)}</option>
@@ -173,7 +173,7 @@ function AddTaskModal({ onClose, onAdd }) {
               value={status}
               onChange={e => setStatus(e.target.value)}
               className="px-3 py-2.5 rounded-xl text-sm outline-none"
-              style={{ background: '#1c2236', border: '1px solid #2a3250', color: '#e2e8f0' }}
+              style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--text)' }}
             >
               {COLUMNS.map(c => (
                 <option key={c.id} value={c.id}>{c.label}</option>
@@ -186,7 +186,7 @@ function AddTaskModal({ onClose, onAdd }) {
             onChange={e => setTags(e.target.value)}
             placeholder="Tags (comma separated)"
             className="w-full px-4 py-3 rounded-xl text-sm outline-none"
-            style={{ background: '#1c2236', border: '1px solid #2a3250', color: '#e2e8f0' }}
+            style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--text)' }}
           />
 
           {/* AI breakdown button */}
@@ -194,7 +194,7 @@ function AddTaskModal({ onClose, onAdd }) {
             onClick={handleAIBreakdown}
             disabled={aiBreaking}
             className="w-full py-2.5 rounded-xl text-sm font-medium flex items-center justify-center gap-2"
-            style={{ background: 'rgba(167,139,250,0.1)', color: '#a78bfa', border: '1px solid rgba(167,139,250,0.2)' }}
+            style={{ background: 'rgba(167,139,250,0.1)', color: 'var(--accent)', border: '1px solid rgba(167,139,250,0.2)' }}
           >
             {aiBreaking
               ? <div className="w-4 h-4 border-2 border-purple-400 border-t-transparent rounded-full animate-spin" />
@@ -204,12 +204,12 @@ function AddTaskModal({ onClose, onAdd }) {
           </button>
 
           {suggestedSubtasks.length > 0 && (
-            <div className="rounded-xl p-3" style={{ background: '#1c2236' }}>
-              <p className="text-xs font-semibold mb-2" style={{ color: '#7c3aed' }}>AI-Generated Subtasks:</p>
+            <div className="rounded-xl p-3" style={{ background: 'var(--surface-2)' }}>
+              <p className="text-xs font-semibold mb-2" style={{ color: 'var(--accent-strong)' }}>AI-Generated Subtasks:</p>
               {suggestedSubtasks.map((s, i) => (
                 <div key={i} className="flex items-center gap-2 py-1">
-                  <CheckCircle2 size={12} style={{ color: '#4ade80' }} />
-                  <span className="text-xs" style={{ color: '#94a3b8' }}>{s.title}</span>
+                  <CheckCircle2 size={12} style={{ color: 'var(--success)' }} />
+                  <span className="text-xs" style={{ color: 'var(--muted)' }}>{s.title}</span>
                 </div>
               ))}
             </div>
@@ -220,14 +220,14 @@ function AddTaskModal({ onClose, onAdd }) {
           <button
             onClick={onClose}
             className="flex-1 py-2.5 rounded-xl text-sm font-medium"
-            style={{ background: '#1c2236', color: '#566082' }}
+            style={{ background: 'var(--surface-2)', color: 'var(--subtle)' }}
           >
             Cancel
           </button>
           <button
             onClick={handleAdd}
             className="flex-1 py-2.5 rounded-xl text-sm font-semibold"
-            style={{ background: 'linear-gradient(135deg, #3b6dfb, #7c3aed)', color: 'white' }}
+            style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-strong))', color: 'white' }}
           >
             Create Task
           </button>
@@ -291,15 +291,15 @@ export default function TasksPage() {
   return (
     <div className="flex flex-col h-screen">
       {/* Header */}
-      <div className="px-8 py-6 border-b flex items-center justify-between" style={{ borderColor: '#2a3250' }}>
+      <div className="px-8 py-6 border-b flex items-center justify-between" style={{ borderColor: 'var(--border)' }}>
         <div>
-          <h1 className="text-2xl font-bold" style={{ color: '#e2e8f0' }}>Kanban Board</h1>
-          <p className="text-sm mt-0.5" style={{ color: '#566082' }}>Drag and track your tasks</p>
+          <h1 className="text-2xl font-bold" style={{ color: 'var(--text)' }}>Kanban Board</h1>
+          <p className="text-sm mt-0.5" style={{ color: 'var(--subtle)' }}>Drag and track your tasks</p>
         </div>
         <button
           onClick={() => setShowModal(true)}
           className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all"
-          style={{ background: 'linear-gradient(135deg, #3b6dfb, #7c3aed)', color: 'white' }}
+          style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-strong))', color: 'white' }}
         >
           <Plus size={16} /> New Task
         </button>
@@ -327,7 +327,7 @@ export default function TasksPage() {
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 rounded-full" style={{ background: col.color }} />
-                      <h3 className="text-sm font-semibold" style={{ color: '#94a3b8' }}>{col.label}</h3>
+                      <h3 className="text-sm font-semibold" style={{ color: 'var(--muted)' }}>{col.label}</h3>
                     </div>
                     <span
                       className="text-xs font-bold px-2 py-0.5 rounded-full"
@@ -345,8 +345,8 @@ export default function TasksPage() {
                         {...provided.droppableProps}
                         className="rounded-xl p-3 min-h-48 transition-all"
                         style={{
-                          background: snapshot.isDraggingOver ? 'rgba(59,109,251,0.08)' : 'rgba(28,34,54,0.5)',
-                          border: snapshot.isDraggingOver ? '1px dashed #3b6dfb' : '1px dashed #2a3250',
+                          background: snapshot.isDraggingOver ? 'var(--accent-soft)' : 'var(--surface)',
+                          border: snapshot.isDraggingOver ? '1px dashed var(--accent)' : '1px dashed var(--border)',
                         }}
                       >
                         {(board[col.id] || []).map((task, index) => (
@@ -373,7 +373,7 @@ export default function TasksPage() {
                         ))}
                         {provided.placeholder}
                         {(board[col.id] || []).length === 0 && (
-                          <div className="flex items-center justify-center h-24 text-xs" style={{ color: '#2a3250' }}>
+                          <div className="flex items-center justify-center h-24 text-xs" style={{ color: 'var(--border)' }}>
                             Drop tasks here
                           </div>
                         )}

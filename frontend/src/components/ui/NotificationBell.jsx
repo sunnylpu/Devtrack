@@ -51,15 +51,15 @@ export default function NotificationBell() {
       <button
         onClick={() => setOpen(!open)}
         className="relative p-2 rounded-xl transition-all"
-        style={{ background: open ? 'rgba(59,109,251,0.15)' : 'transparent' }}
-        onMouseEnter={e => e.currentTarget.style.background = 'rgba(59,109,251,0.15)'}
+        style={{ background: open ? 'var(--accent-soft)' : 'transparent' }}
+        onMouseEnter={e => e.currentTarget.style.background = 'var(--accent-soft)'}
         onMouseLeave={e => { if (!open) e.currentTarget.style.background = 'transparent'; }}
       >
-        <Bell size={20} style={{ color: unreadCount > 0 ? '#3b6dfb' : '#566082' }} />
+        <Bell size={20} style={{ color: unreadCount > 0 ? 'var(--accent)' : 'var(--subtle)' }} />
         {unreadCount > 0 && (
           <span
             className="absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold"
-            style={{ background: '#f87171', color: 'white', fontSize: '10px' }}
+            style={{ background: 'var(--danger)', color: 'white', fontSize: '10px' }}
           >
             {unreadCount > 9 ? '9+' : unreadCount}
           </span>
@@ -74,14 +74,14 @@ export default function NotificationBell() {
           {/* Panel */}
           <div
             className="absolute right-0 top-12 w-96 rounded-2xl z-50 shadow-2xl overflow-hidden animate-fade-in"
-            style={{ background: '#141827', border: '1px solid #2a3250' }}
+            style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: '#2a3250' }}>
+            <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: 'var(--border)' }}>
               <div className="flex items-center gap-2">
-                <Bell size={16} style={{ color: '#3b6dfb' }} />
-                <h3 className="font-semibold text-sm" style={{ color: '#e2e8f0' }}>
-                  Notifications {unreadCount > 0 && <span style={{ color: '#3b6dfb' }}>({unreadCount})</span>}
+                <Bell size={16} style={{ color: 'var(--accent)' }} />
+                <h3 className="font-semibold text-sm" style={{ color: 'var(--text)' }}>
+                  Notifications {unreadCount > 0 && <span style={{ color: 'var(--accent)' }}>({unreadCount})</span>}
                 </h3>
               </div>
               <div className="flex gap-2">
@@ -89,12 +89,12 @@ export default function NotificationBell() {
                   <button
                     onClick={() => markAllReadMutation.mutate()}
                     className="text-xs px-2 py-1 rounded-lg flex items-center gap-1"
-                    style={{ color: '#3b6dfb', background: 'rgba(59,109,251,0.1)' }}
+                    style={{ color: 'var(--accent)', background: 'var(--accent-soft)' }}
                   >
                     <CheckCheck size={12} /> All read
                   </button>
                 )}
-                <button onClick={() => setOpen(false)} style={{ color: '#566082' }}>
+                <button onClick={() => setOpen(false)} style={{ color: 'var(--subtle)' }}>
                   <X size={16} />
                 </button>
               </div>
@@ -104,8 +104,8 @@ export default function NotificationBell() {
             <div className="max-h-80 overflow-y-auto">
               {notifications.length === 0 ? (
                 <div className="text-center py-10">
-                  <Bell size={32} style={{ color: '#2a3250', margin: '0 auto 8px' }} />
-                  <p className="text-sm" style={{ color: '#566082' }}>No notifications</p>
+                  <Bell size={32} style={{ color: 'var(--border)', margin: '0 auto 8px' }} />
+                  <p className="text-sm" style={{ color: 'var(--subtle)' }}>No notifications</p>
                 </div>
               ) : (
                 notifications.map(n => (
@@ -113,18 +113,18 @@ export default function NotificationBell() {
                     key={n._id}
                     className="flex gap-3 px-4 py-3 border-b transition-all cursor-pointer"
                     style={{
-                      borderColor: '#1c2236',
-                      background: n.read ? 'transparent' : 'rgba(59,109,251,0.05)',
-                      borderLeft: n.read ? 'none' : '3px solid #3b6dfb',
+                      borderColor: 'var(--surface-2)',
+                      background: n.read ? 'transparent' : 'var(--accent-soft)',
+                      borderLeft: n.read ? 'none' : '3px solid var(--accent)',
                     }}
                   >
                     <span className="text-lg flex-shrink-0 mt-0.5">
                       {TYPE_ICONS[n.type] || '🔔'}
                     </span>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium" style={{ color: '#e2e8f0' }}>{n.title}</p>
-                      <p className="text-xs mt-0.5" style={{ color: '#566082' }}>{n.message}</p>
-                      <p className="text-xs mt-1" style={{ color: '#3d4568' }}>
+                      <p className="text-sm font-medium" style={{ color: 'var(--text)' }}>{n.title}</p>
+                      <p className="text-xs mt-0.5" style={{ color: 'var(--subtle)' }}>{n.message}</p>
+                      <p className="text-xs mt-1" style={{ color: 'var(--subtle)' }}>
                         {format(new Date(n.createdAt), 'MMM d, h:mm a')}
                       </p>
                     </div>
@@ -135,7 +135,7 @@ export default function NotificationBell() {
                           className="p-1 rounded hover:bg-green-500/10"
                           title="Mark as read"
                         >
-                          <Check size={12} style={{ color: '#4ade80' }} />
+                          <Check size={12} style={{ color: 'var(--success)' }} />
                         </button>
                       )}
                       <button
@@ -143,7 +143,7 @@ export default function NotificationBell() {
                         className="p-1 rounded hover:bg-red-500/10"
                         title="Delete"
                       >
-                        <Trash2 size={12} style={{ color: '#566082' }} />
+                        <Trash2 size={12} style={{ color: 'var(--subtle)' }} />
                       </button>
                     </div>
                   </div>

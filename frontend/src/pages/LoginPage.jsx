@@ -18,7 +18,7 @@ export default function LoginPage() {
     setIsLoading(true);
     try {
       await login(email, password);
-      toast.success('Welcome back! 🚀');
+      toast.success('Welcome back!');
       navigate('/dashboard');
     } catch (err) {
       toast.error(err.response?.data?.message || 'Login failed');
@@ -28,75 +28,49 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4" style={{ background: '#0a0c18' }}>
-      {/* Background glow */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: 'radial-gradient(ellipse 60% 50% at 50% 0%, rgba(59,109,251,0.08) 0%, transparent 70%)',
-        }}
-      />
-
-      <div className="w-full max-w-md animate-fade-in">
-        {/* Logo */}
-        <div className="flex items-center justify-center gap-3 mb-10">
-          <div
-            className="w-11 h-11 rounded-2xl flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg, #3b6dfb, #7c3aed)', boxShadow: '0 0 30px rgba(59,109,251,0.4)' }}
-          >
+    <div className="auth-page auth-page-accent">
+      <div className="auth-shell animate-fade-in">
+        <div className="auth-brand">
+          <div className="auth-logo">
             <Zap size={22} color="white" />
           </div>
-          <div>
-            <h1 className="text-xl font-bold" style={{ color: '#e2e8f0' }}>DevTrack <span className="gradient-text">Pro</span></h1>
-          </div>
+          <h1>DevTrack <span className="gradient-text">Pro</span></h1>
         </div>
 
-        {/* Card */}
-        <div className="rounded-2xl p-8" style={{ background: '#141827', border: '1px solid #2a3250' }}>
-          <h2 className="text-2xl font-bold mb-2" style={{ color: '#e2e8f0' }}>Welcome back</h2>
-          <p className="mb-8 text-sm" style={{ color: '#566082' }}>Sign in to your account to continue</p>
+        <div className="auth-card">
+          <div className="auth-heading">
+            <h2>Welcome back</h2>
+            <p>Sign in with the account you created on this app.</p>
+          </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>Email address</label>
+          <form onSubmit={handleSubmit} className="auth-form">
+            <div className="auth-field">
+              <label htmlFor="login-email">Email address</label>
               <input
+                id="login-email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="sunny@devtrack.com"
-                className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-all duration-200"
-                style={{
-                  background: '#1c2236',
-                  border: '1px solid #2a3250',
-                  color: '#e2e8f0',
-                }}
-                onFocus={e => e.target.style.borderColor = '#3b6dfb'}
-                onBlur={e => e.target.style.borderColor = '#2a3250'}
+                placeholder="you@example.com"
+                autoComplete="email"
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>Password</label>
-              <div className="relative">
+            <div className="auth-field">
+              <label htmlFor="login-password">Password</label>
+              <div className="auth-password">
                 <input
+                  id="login-password"
                   type={showPass ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full px-4 py-3 pr-12 rounded-xl text-sm outline-none transition-all duration-200"
-                  style={{
-                    background: '#1c2236',
-                    border: '1px solid #2a3250',
-                    color: '#e2e8f0',
-                  }}
-                  onFocus={e => e.target.style.borderColor = '#3b6dfb'}
-                  onBlur={e => e.target.style.borderColor = '#2a3250'}
+                  placeholder="Enter your password"
+                  autoComplete="current-password"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPass(!showPass)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2"
-                  style={{ color: '#566082' }}
+                  aria-label={showPass ? 'Hide password' : 'Show password'}
                 >
                   {showPass ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
@@ -106,24 +80,19 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 px-6 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-200"
-              style={{
-                background: 'linear-gradient(135deg, #3b6dfb, #7c3aed)',
-                color: 'white',
-                opacity: isLoading ? 0.7 : 1,
-              }}
+              className="auth-submit"
             >
               {isLoading ? (
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <span className="auth-spinner" />
               ) : (
                 <>Sign In <ArrowRight size={16} /></>
               )}
             </button>
           </form>
 
-          <p className="mt-6 text-center text-sm" style={{ color: '#566082' }}>
+          <p className="auth-switch">
             Don't have an account?{' '}
-            <Link to="/register" style={{ color: '#3b6dfb' }} className="font-semibold hover:underline">
+            <Link to="/register">
               Sign up
             </Link>
           </p>

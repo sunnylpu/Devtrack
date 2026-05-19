@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useAuthStore } from '../store/authStore';
 import { authService } from '../services';
-import { User, Bell, Moon, Lock, Save } from 'lucide-react';
+import { User, Bell, Moon, Sun, Lock, Save } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function SettingsPage() {
@@ -11,6 +11,7 @@ export default function SettingsPage() {
   const [pomodoroWork, setPomodoroWork] = useState(user?.preferences?.pomodoroWork || 25);
   const [pomodoroBreak, setPomodoroBreak] = useState(user?.preferences?.pomodoroBreak || 5);
   const [pomodoroLong, setPomodoroLong] = useState(user?.preferences?.pomodoroLongBreak || 15);
+  const [theme, setTheme] = useState(user?.preferences?.theme === 'light' ? 'light' : 'dark');
   const [currentPass, setCurrentPass] = useState('');
   const [newPass, setNewPass] = useState('');
 
@@ -36,14 +37,19 @@ export default function SettingsPage() {
   const handleProfileSave = () => {
     profileMutation.mutate({
       name,
-      preferences: { pomodoroWork, pomodoroBreak, pomodoroLongBreak: pomodoroLong },
+      preferences: { theme, pomodoroWork, pomodoroBreak, pomodoroLongBreak: pomodoroLong },
     });
   };
 
+  const handleThemeChange = (nextTheme) => {
+    setTheme(nextTheme);
+    document.documentElement.dataset.theme = nextTheme;
+  };
+
   const inputStyle = {
-    background: '#1c2236',
-    border: '1px solid #2a3250',
-    color: '#e2e8f0',
+    background: 'var(--surface-2)',
+    border: '1px solid var(--border)',
+    color: 'var(--text)',
     width: '100%',
     padding: '10px 16px',
     borderRadius: '12px',
@@ -52,10 +58,10 @@ export default function SettingsPage() {
   };
 
   const Section = ({ icon: Icon, title, children }) => (
-    <div className="rounded-2xl p-6 mb-5" style={{ background: '#141827', border: '1px solid #2a3250' }}>
+    <div className="rounded-2xl p-6 mb-5" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
       <div className="flex items-center gap-2 mb-5">
-        <Icon size={16} style={{ color: '#3b6dfb' }} />
-        <h3 className="font-semibold" style={{ color: '#e2e8f0' }}>{title}</h3>
+        <Icon size={16} style={{ color: 'var(--accent)' }} />
+        <h3 className="font-semibold" style={{ color: 'var(--text)' }}>{title}</h3>
       </div>
       {children}
     </div>
@@ -63,23 +69,23 @@ export default function SettingsPage() {
 
   return (
     <div className="p-8 max-w-2xl">
-      <h1 className="text-2xl font-bold mb-8" style={{ color: '#e2e8f0' }}>Settings</h1>
+      <h1 className="text-2xl font-bold mb-8" style={{ color: 'var(--text)' }}>Settings</h1>
 
       {/* Profile */}
       <Section icon={User} title="Profile">
         <div className="flex items-center gap-4 mb-6">
           <div
             className="w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold"
-            style={{ background: 'linear-gradient(135deg, #3b6dfb, #7c3aed)', color: 'white' }}
+            style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-strong))', color: 'white' }}
           >
             {user?.name?.[0]?.toUpperCase()}
           </div>
           <div>
-            <p className="font-semibold" style={{ color: '#e2e8f0' }}>{user?.name}</p>
-            <p className="text-sm" style={{ color: '#566082' }}>{user?.email}</p>
+            <p className="font-semibold" style={{ color: 'var(--text)' }}>{user?.name}</p>
+            <p className="text-sm" style={{ color: 'var(--subtle)' }}>{user?.email}</p>
             <span
               className="text-xs px-2 py-0.5 rounded-full mt-1 inline-block"
-              style={{ background: 'rgba(59,109,251,0.15)', color: '#3b6dfb' }}
+              style={{ background: 'var(--accent-soft)', color: 'var(--accent)' }}
             >
               {user?.role?.replace('_', ' ')}
             </span>
@@ -87,15 +93,42 @@ export default function SettingsPage() {
         </div>
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>Full Name</label>
+            <label className="block text-sm font-medium mb-2" style={{ color: 'var(--muted)' }}>Full Name</label>
             <input
               value={name}
               onChange={e => setName(e.target.value)}
               style={inputStyle}
-              onFocus={e => e.target.style.borderColor = '#3b6dfb'}
-              onBlur={e => e.target.style.borderColor = '#2a3250'}
+              onFocus={e => e.target.style.borderColor = 'var(--accent)'}
+              onBlur={e => e.target.style.borderColor = 'var(--border)'}
             />
           </div>
+        </div>
+      </Section>
+
+      <Section icon={theme === 'dark' ? Moon : Sun} title="Appearance">
+        <div className="grid grid-cols-2 gap-3">
+          {[
+            { value: 'dark', label: 'Dark', Icon: Moon },
+            { value: 'light', label: 'Light', Icon: Sun },
+          ].map(({ value, label, Icon }) => {
+            const active = theme === value;
+            return (
+              <button
+                key={value}
+                type="button"
+                onClick={() => handleThemeChange(value)}
+                className="flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition-all"
+                style={{
+                  background: active ? 'var(--accent-soft)' : 'var(--surface-2)',
+                  border: `1px solid ${active ? 'var(--accent)' : 'var(--border)'}`,
+                  color: active ? 'var(--accent)' : 'var(--muted)',
+                }}
+              >
+                <Icon size={16} />
+                {label}
+              </button>
+            );
+          })}
         </div>
       </Section>
 
@@ -108,7 +141,7 @@ export default function SettingsPage() {
             { label: 'Long Break', value: pomodoroLong, setter: setPomodoroLong, min: 5, max: 60 },
           ].map(({ label, value, setter, min, max }) => (
             <div key={label}>
-              <label className="block text-xs font-medium mb-2" style={{ color: '#94a3b8' }}>{label}</label>
+              <label className="block text-xs font-medium mb-2" style={{ color: 'var(--muted)' }}>{label}</label>
               <input
                 type="number"
                 value={value}
@@ -116,8 +149,8 @@ export default function SettingsPage() {
                 min={min}
                 max={max}
                 style={inputStyle}
-                onFocus={e => e.target.style.borderColor = '#3b6dfb'}
-                onBlur={e => e.target.style.borderColor = '#2a3250'}
+                onFocus={e => e.target.style.borderColor = 'var(--accent)'}
+                onBlur={e => e.target.style.borderColor = 'var(--border)'}
               />
             </div>
           ))}
@@ -129,7 +162,7 @@ export default function SettingsPage() {
         onClick={handleProfileSave}
         disabled={profileMutation.isPending}
         className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm mb-5"
-        style={{ background: 'linear-gradient(135deg, #3b6dfb, #7c3aed)', color: 'white' }}
+        style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-strong))', color: 'white' }}
       >
         <Save size={16} />
         {profileMutation.isPending ? 'Saving...' : 'Save Changes'}
@@ -139,27 +172,27 @@ export default function SettingsPage() {
       <Section icon={Lock} title="Change Password">
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>Current Password</label>
+            <label className="block text-sm font-medium mb-2" style={{ color: 'var(--muted)' }}>Current Password</label>
             <input
               type="password"
               value={currentPass}
               onChange={e => setCurrentPass(e.target.value)}
               placeholder="••••••••"
               style={inputStyle}
-              onFocus={e => e.target.style.borderColor = '#3b6dfb'}
-              onBlur={e => e.target.style.borderColor = '#2a3250'}
+              onFocus={e => e.target.style.borderColor = 'var(--accent)'}
+              onBlur={e => e.target.style.borderColor = 'var(--border)'}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>New Password</label>
+            <label className="block text-sm font-medium mb-2" style={{ color: 'var(--muted)' }}>New Password</label>
             <input
               type="password"
               value={newPass}
               onChange={e => setNewPass(e.target.value)}
               placeholder="Min. 6 characters"
               style={inputStyle}
-              onFocus={e => e.target.style.borderColor = '#3b6dfb'}
-              onBlur={e => e.target.style.borderColor = '#2a3250'}
+              onFocus={e => e.target.style.borderColor = 'var(--accent)'}
+              onBlur={e => e.target.style.borderColor = 'var(--border)'}
             />
           </div>
           <button
@@ -167,9 +200,9 @@ export default function SettingsPage() {
             disabled={!currentPass || !newPass || passwordMutation.isPending}
             className="px-6 py-2.5 rounded-xl text-sm font-semibold"
             style={{
-              background: '#1c2236',
-              border: '1px solid #2a3250',
-              color: '#94a3b8',
+              background: 'var(--surface-2)',
+              border: '1px solid var(--border)',
+              color: 'var(--muted)',
               opacity: (!currentPass || !newPass) ? 0.5 : 1,
             }}
           >

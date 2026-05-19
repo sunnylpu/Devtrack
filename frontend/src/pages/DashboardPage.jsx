@@ -8,7 +8,7 @@ import {
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { format } from 'date-fns';
 
-const PIE_COLORS = ['#3b6dfb', '#60a5fa', '#c084fc', '#4ade80'];
+const PIE_COLORS = ['var(--accent)', 'var(--accent-2)', '#c084fc', 'var(--success)'];
 const STATUS_LABELS = { todo: 'To Do', 'in-progress': 'In Progress', review: 'Review', completed: 'Completed' };
 
 export default function DashboardPage() {
@@ -52,10 +52,10 @@ export default function DashboardPage() {
       value: overview.totalTasks ?? 0,
       sub: 'all time',
       icon: LayoutDashboard,
-      gradient: 'linear-gradient(135deg, rgba(59,109,251,0.15), rgba(59,109,251,0.05))',
-      iconBg: 'rgba(59,109,251,0.2)',
-      iconColor: '#3b6dfb',
-      glow: 'card-blue',
+      gradient: 'linear-gradient(135deg, var(--accent-soft), var(--accent-soft))',
+      iconBg: 'var(--accent-panel)',
+      iconColor: 'var(--accent)',
+      glow: 'card-accent',
     },
     {
       label: 'Completed',
@@ -64,7 +64,7 @@ export default function DashboardPage() {
       icon: CheckCircle2,
       gradient: 'linear-gradient(135deg, rgba(74,222,128,0.15), rgba(74,222,128,0.05))',
       iconBg: 'rgba(74,222,128,0.2)',
-      iconColor: '#4ade80',
+      iconColor: 'var(--success)',
       glow: 'card-green',
     },
     {
@@ -74,10 +74,10 @@ export default function DashboardPage() {
       icon: TrendingUp,
       gradient: 'linear-gradient(135deg, rgba(124,58,237,0.15), rgba(124,58,237,0.05))',
       iconBg: 'rgba(124,58,237,0.2)',
-      iconColor: '#a78bfa',
+      iconColor: 'var(--accent)',
       glow: 'card-purple',
       badge: overview.productivityScore > 0 ? `↑ ${overview.productivityScore}%` : null,
-      badgeColor: '#4ade80',
+      badgeColor: 'var(--success)',
     },
     {
       label: 'Overdue',
@@ -86,7 +86,7 @@ export default function DashboardPage() {
       icon: AlertTriangle,
       gradient: 'linear-gradient(135deg, rgba(251,146,60,0.15), rgba(251,146,60,0.05))',
       iconBg: 'rgba(251,146,60,0.2)',
-      iconColor: '#fb923c',
+      iconColor: 'var(--warning)',
       glow: 'card-orange',
     },
   ];
@@ -124,11 +124,11 @@ export default function DashboardPage() {
                     </span>
                   )}
                 </div>
-                <div style={{ fontSize: 32, fontWeight: 800, color: '#e2e8f0', lineHeight: 1, marginBottom: 4 }}>
+                <div style={{ fontSize: 32, fontWeight: 800, color: 'var(--text)', lineHeight: 1, marginBottom: 4 }}>
                   {value}
                 </div>
-                <div style={{ fontSize: 14, fontWeight: 600, color: '#94a3b8', marginBottom: 2 }}>{label}</div>
-                <div style={{ fontSize: 12, color: '#566082' }}>{sub}</div>
+                <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--muted)', marginBottom: 2 }}>{label}</div>
+                <div style={{ fontSize: 12, color: 'var(--subtle)' }}>{sub}</div>
               </div>
             ))
         }
@@ -144,23 +144,23 @@ export default function DashboardPage() {
               <AreaChart data={trendData}>
                 <defs>
                   <linearGradient id="colorComp" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#3b6dfb" stopOpacity={0.4} />
-                    <stop offset="95%" stopColor="#3b6dfb" stopOpacity={0} />
+                    <stop offset="5%" stopColor="var(--accent)" stopOpacity={0.4} />
+                    <stop offset="95%" stopColor="var(--accent)" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <XAxis dataKey="date" stroke="#3d4568" tick={{ fill: '#566082', fontSize: 11 }} axisLine={false} tickLine={false} />
-                <YAxis stroke="#3d4568" tick={{ fill: '#566082', fontSize: 11 }} axisLine={false} tickLine={false} allowDecimals={false} />
+                <XAxis dataKey="date" stroke="var(--subtle)" tick={{ fill: 'var(--subtle)', fontSize: 11 }} axisLine={false} tickLine={false} />
+                <YAxis stroke="var(--subtle)" tick={{ fill: 'var(--subtle)', fontSize: 11 }} axisLine={false} tickLine={false} allowDecimals={false} />
                 <Tooltip
-                  contentStyle={{ background: '#1c2236', border: '1px solid #2a3250', borderRadius: 12, color: '#e2e8f0', fontSize: 13, boxShadow: '0 8px 24px rgba(0,0,0,0.4)' }}
-                  labelStyle={{ color: '#94a3b8' }}
+                  contentStyle={{ background: 'var(--surface-2)', border: '1px solid var(--border)', borderRadius: 12, color: 'var(--text)', fontSize: 13, boxShadow: '0 8px 24px rgba(0,0,0,0.4)' }}
+                  labelStyle={{ color: 'var(--muted)' }}
                 />
-                <Area type="monotone" dataKey="completed" stroke="#3b6dfb" strokeWidth={2.5} fill="url(#colorComp)" />
+                <Area type="monotone" dataKey="completed" stroke="var(--accent)" strokeWidth={2.5} fill="url(#colorComp)" />
               </AreaChart>
             </ResponsiveContainer>
           ) : (
             <div style={{ height: 220, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-              <CheckCircle2 size={36} style={{ color: '#2a3250', marginBottom: 12 }} />
-              <p style={{ color: '#566082', fontSize: 14 }}>Complete tasks to see your trend</p>
+              <CheckCircle2 size={36} style={{ color: 'var(--border)', marginBottom: 12 }} />
+              <p style={{ color: 'var(--subtle)', fontSize: 14 }}>Complete tasks to see your trend</p>
             </div>
           )}
         </div>
@@ -184,12 +184,12 @@ export default function DashboardPage() {
                   ))}
                 </Pie>
                 <Tooltip
-                  contentStyle={{ background: '#1c2236', border: '1px solid #2a3250', borderRadius: 12, color: '#e2e8f0', fontSize: 13 }}
+                  contentStyle={{ background: 'var(--surface-2)', border: '1px solid var(--border)', borderRadius: 12, color: 'var(--text)', fontSize: 13 }}
                 />
               </PieChart>
             </ResponsiveContainer>
           ) : (
-            <div style={{ height: 220, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#566082', fontSize: 14 }}>
+            <div style={{ height: 220, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--subtle)', fontSize: 14 }}>
               No tasks yet
             </div>
           )}
@@ -202,23 +202,23 @@ export default function DashboardPage() {
         <div className="card card-purple">
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
             <div className="stat-icon" style={{ background: 'rgba(124,58,237,0.2)', width: 36, height: 36 }}>
-              <Sparkles size={16} style={{ color: '#a78bfa', position: 'relative', zIndex: 1 }} />
+              <Sparkles size={16} style={{ color: 'var(--accent)', position: 'relative', zIndex: 1 }} />
             </div>
             <p className="section-title" style={{ paddingBottom: 0 }}>AI WEEKLY SUMMARY</p>
           </div>
-          <p style={{ color: '#94a3b8', fontSize: 14, lineHeight: 1.7 }}>
+          <p style={{ color: 'var(--muted)', fontSize: 14, lineHeight: 1.7 }}>
             {summaryText || 'Keep pushing - every task completed is progress!'}
           </p>
           {summaryStats.completed !== undefined && (
             <div style={{ display: 'flex', gap: 32, marginTop: 20 }}>
               {[
-                { label: 'Completed', value: summaryStats.completed ?? 0, color: '#4ade80' },
-                { label: 'Created', value: summaryStats.created ?? 0, color: '#3b6dfb' },
-                { label: 'Overdue', value: summaryStats.overdue ?? 0, color: '#f87171' },
+                { label: 'Completed', value: summaryStats.completed ?? 0, color: 'var(--success)' },
+                { label: 'Created', value: summaryStats.created ?? 0, color: 'var(--accent)' },
+                { label: 'Overdue', value: summaryStats.overdue ?? 0, color: 'var(--danger)' },
               ].map(({ label, value, color }) => (
                 <div key={label} style={{ textAlign: 'center' }}>
                   <div style={{ fontSize: 22, fontWeight: 800, color }}>{value}</div>
-                  <div style={{ fontSize: 12, color: '#566082' }}>{label}</div>
+                  <div style={{ fontSize: 12, color: 'var(--subtle)' }}>{label}</div>
                 </div>
               ))}
             </div>
@@ -226,10 +226,10 @@ export default function DashboardPage() {
         </div>
 
         {/* Productivity Tips */}
-        <div className="card card-blue">
+        <div className="card card-accent">
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
             <div className="stat-icon" style={{ background: 'rgba(250,204,21,0.2)', width: 36, height: 36 }}>
-              <Lightbulb size={16} style={{ color: '#facc15', position: 'relative', zIndex: 1 }} />
+              <Lightbulb size={16} style={{ color: 'var(--warning)', position: 'relative', zIndex: 1 }} />
             </div>
             <p className="section-title" style={{ paddingBottom: 0 }}>PRODUCTIVITY TIPS</p>
           </div>
@@ -241,16 +241,16 @@ export default function DashboardPage() {
                     width: 24, height: 24, borderRadius: 8, flexShrink: 0,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     fontSize: 12, fontWeight: 700,
-                    background: ['rgba(59,109,251,0.15)', 'rgba(74,222,128,0.15)', 'rgba(251,146,60,0.15)'][i],
-                    color: ['#3b6dfb', '#4ade80', '#fb923c'][i],
+                    background: ['var(--accent-soft)', 'rgba(74,222,128,0.15)', 'rgba(251,146,60,0.15)'][i],
+                    color: ['var(--accent)', 'var(--success)', 'var(--warning)'][i],
                   }}
                 >
                   {i + 1}
                 </span>
-                <p style={{ color: '#94a3b8', fontSize: 13, lineHeight: 1.5 }}>{tip.tip || tip}</p>
+                <p style={{ color: 'var(--muted)', fontSize: 13, lineHeight: 1.5 }}>{tip.tip || tip}</p>
               </div>
             )) : (
-              <p style={{ color: '#566082', fontSize: 13 }}>Loading tips...</p>
+              <p style={{ color: 'var(--subtle)', fontSize: 13 }}>Loading tips...</p>
             )}
           </div>
         </div>

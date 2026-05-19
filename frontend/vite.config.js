@@ -2,6 +2,16 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
+const handleProxyError = (err, _req, res) => {
+  if (res?.writeHead && !res.headersSent) {
+    res.writeHead(502, { 'Content-Type': 'application/json' })
+  }
+  if (res?.end) {
+    res.end(JSON.stringify({ success: false, message: 'Backend API is not available. Start the backend on port 5001.' }))
+  }
+  console.warn(`[vite proxy] Backend unavailable: ${err.code || err.message}`)
+}
+
 export default defineConfig({
   plugins: [
     react(),
@@ -13,11 +23,19 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:5001',
         changeOrigin: true,
+        configure: (proxy) => {
+          proxy.on('error', handleProxyError)
+        },
       },
       '/socket.io': {
         target: 'http://localhost:5001',
         ws: true,
         changeOrigin: true,
+        configure: (proxy) => {
+          proxy.on('error', (err) => {
+            console.warn(`[vite proxy] Socket backend unavailable: ${err.code || err.message}`)
+          })
+        },
       },
     },
   },

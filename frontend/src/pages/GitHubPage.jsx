@@ -4,13 +4,13 @@ import { Github, ExternalLink, Star, GitCommit, Code2, Link } from 'lucide-react
 import { format } from 'date-fns';
 
 const LANG_COLORS = {
-  JavaScript: '#f7df1e', TypeScript: '#3178c6', Python: '#3572a5',
-  Java: '#b07219', Go: '#00add8', Rust: '#dea584', CSS: '#563d7c',
+  JavaScript: '#f7df1e', TypeScript: '#7c3aed', Python: '#16a34a',
+  Java: '#b07219', Go: '#f59e0b', Rust: '#dea584', CSS: '#563d7c',
   HTML: '#e34c26', C: '#555555', 'C++': '#f34b7d', Ruby: '#701516',
 };
 
 function HeatmapGrid({ weeks }) {
-  if (!weeks?.length) return <div className="text-sm" style={{ color: '#566082' }}>No contribution data</div>;
+  if (!weeks?.length) return <div className="text-sm" style={{ color: 'var(--subtle)' }}>No contribution data</div>;
 
   return (
     <div className="overflow-x-auto">
@@ -24,14 +24,14 @@ function HeatmapGrid({ weeks }) {
                 className="w-3 h-3 rounded-sm transition-all hover:scale-125"
                 style={{
                   background: day.contributionCount === 0
-                    ? '#1c2236'
+                    ? 'var(--surface-2)'
                     : day.contributionCount < 3
-                    ? 'rgba(59,109,251,0.3)'
+                    ? 'var(--accent-panel)'
                     : day.contributionCount < 6
-                    ? 'rgba(59,109,251,0.6)'
+                    ? 'var(--accent-strong)'
                     : day.contributionCount < 10
-                    ? '#3b6dfb'
-                    : '#7c3aed',
+                    ? 'var(--accent)'
+                    : 'var(--accent-strong)',
                 }}
               />
             ))}
@@ -71,18 +71,18 @@ export default function GitHubPage() {
         <div className="text-center">
           <div
             className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6"
-            style={{ background: 'rgba(59,109,251,0.1)', border: '1px solid rgba(59,109,251,0.2)' }}
+            style={{ background: 'var(--accent-soft)', border: '1px solid var(--accent-panel)' }}
           >
-            <Github size={40} style={{ color: '#3b6dfb' }} />
+            <Github size={40} style={{ color: 'var(--accent)' }} />
           </div>
-          <h2 className="text-2xl font-bold mb-3" style={{ color: '#e2e8f0' }}>Connect GitHub</h2>
-          <p className="mb-6 text-sm max-w-md" style={{ color: '#566082' }}>
+          <h2 className="text-2xl font-bold mb-3" style={{ color: 'var(--text)' }}>Connect GitHub</h2>
+          <p className="mb-6 text-sm max-w-md" style={{ color: 'var(--subtle)' }}>
             Connect your GitHub account to track commits, repos, contribution heatmap, and language stats.
           </p>
           <button
             onClick={githubService.connect}
             className="px-8 py-3 rounded-xl font-semibold flex items-center gap-2 mx-auto"
-            style={{ background: 'linear-gradient(135deg, #3b6dfb, #7c3aed)', color: 'white' }}
+            style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-strong))', color: 'white' }}
           >
             <Github size={18} /> Connect GitHub
           </button>
@@ -99,30 +99,30 @@ export default function GitHubPage() {
           <img src={data.avatarUrl} alt={data.username} className="w-12 h-12 rounded-full" />
         )}
         <div>
-          <h1 className="text-2xl font-bold" style={{ color: '#e2e8f0' }}>
+          <h1 className="text-2xl font-bold" style={{ color: 'var(--text)' }}>
             {data.username} <span className="gradient-text">on GitHub</span>
           </h1>
           <a href={data.profileUrl} target="_blank" rel="noreferrer"
-            className="text-sm flex items-center gap-1" style={{ color: '#3b6dfb' }}>
+            className="text-sm flex items-center gap-1" style={{ color: 'var(--accent)' }}>
             View Profile <ExternalLink size={12} />
           </a>
         </div>
       </div>
 
       {/* Heatmap */}
-      <div className="rounded-2xl p-6 mb-6" style={{ background: '#141827', border: '1px solid #2a3250' }}>
+      <div className="rounded-2xl p-6 mb-6" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
         <div className="flex items-center justify-between mb-4">
-          <h3 className="font-semibold" style={{ color: '#94a3b8' }}>CONTRIBUTION HEATMAP</h3>
+          <h3 className="font-semibold" style={{ color: 'var(--muted)' }}>CONTRIBUTION HEATMAP</h3>
           {heatmapData?.totalContributions && (
-            <span className="text-sm font-semibold" style={{ color: '#4ade80' }}>
+            <span className="text-sm font-semibold" style={{ color: 'var(--success)' }}>
               {heatmapData.totalContributions} contributions this year
             </span>
           )}
         </div>
         <HeatmapGrid weeks={heatmapData?.weeks || []} />
-        <div className="flex items-center gap-2 mt-3 text-xs" style={{ color: '#566082' }}>
+        <div className="flex items-center gap-2 mt-3 text-xs" style={{ color: 'var(--subtle)' }}>
           <span>Less</span>
-          {['#1c2236', 'rgba(59,109,251,0.3)', 'rgba(59,109,251,0.6)', '#3b6dfb', '#7c3aed'].map((c, i) => (
+          {['var(--surface-2)', 'var(--accent-panel)', 'var(--accent-strong)', 'var(--accent)', 'var(--accent-strong)'].map((c, i) => (
             <div key={i} className="w-3 h-3 rounded-sm" style={{ background: c }} />
           ))}
           <span>More</span>
@@ -131,22 +131,22 @@ export default function GitHubPage() {
 
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         {/* Recent Commits */}
-        <div className="rounded-2xl p-6" style={{ background: '#141827', border: '1px solid #2a3250' }}>
-          <h3 className="font-semibold mb-4" style={{ color: '#94a3b8' }}>RECENT COMMITS</h3>
+        <div className="rounded-2xl p-6" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+          <h3 className="font-semibold mb-4" style={{ color: 'var(--muted)' }}>RECENT COMMITS</h3>
           <div className="space-y-3">
             {(data.recentCommits || []).slice(0, 8).map((commit, i) => (
               <div key={i} className="flex gap-3">
-                <GitCommit size={14} style={{ color: '#3b6dfb', marginTop: 2, flexShrink: 0 }} />
+                <GitCommit size={14} style={{ color: 'var(--accent)', marginTop: 2, flexShrink: 0 }} />
                 <div className="min-w-0">
-                  <p className="text-sm truncate" style={{ color: '#e2e8f0' }}>{commit.message}</p>
-                  <p className="text-xs" style={{ color: '#566082' }}>
+                  <p className="text-sm truncate" style={{ color: 'var(--text)' }}>{commit.message}</p>
+                  <p className="text-xs" style={{ color: 'var(--subtle)' }}>
                     {commit.repo} · {format(new Date(commit.date), 'MMM d, HH:mm')}
                   </p>
                 </div>
               </div>
             ))}
             {(!data.recentCommits || data.recentCommits.length === 0) && (
-              <p className="text-sm" style={{ color: '#566082' }}>No recent commits</p>
+              <p className="text-sm" style={{ color: 'var(--subtle)' }}>No recent commits</p>
             )}
           </div>
         </div>
@@ -154,29 +154,29 @@ export default function GitHubPage() {
         {/* Repos & Languages */}
         <div className="space-y-4">
           {/* Languages */}
-          <div className="rounded-2xl p-5" style={{ background: '#141827', border: '1px solid #2a3250' }}>
-            <h3 className="font-semibold mb-4 text-sm" style={{ color: '#94a3b8' }}>LANGUAGES</h3>
+          <div className="rounded-2xl p-5" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+            <h3 className="font-semibold mb-4 text-sm" style={{ color: 'var(--muted)' }}>LANGUAGES</h3>
             <div className="flex flex-wrap gap-2">
               {(data.languages || []).map(({ lang, count }) => (
                 <div
                   key={lang}
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium"
-                  style={{ background: '#1c2236', border: '1px solid #2a3250' }}
+                  style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}
                 >
                   <div
                     className="w-2 h-2 rounded-full"
-                    style={{ background: LANG_COLORS[lang] || '#3b6dfb' }}
+                    style={{ background: LANG_COLORS[lang] || 'var(--accent)' }}
                   />
-                  <span style={{ color: '#e2e8f0' }}>{lang}</span>
-                  <span style={{ color: '#566082' }}>({count})</span>
+                  <span style={{ color: 'var(--text)' }}>{lang}</span>
+                  <span style={{ color: 'var(--subtle)' }}>({count})</span>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Top Repos */}
-          <div className="rounded-2xl p-5" style={{ background: '#141827', border: '1px solid #2a3250' }}>
-            <h3 className="font-semibold mb-4 text-sm" style={{ color: '#94a3b8' }}>RECENT REPOS</h3>
+          <div className="rounded-2xl p-5" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+            <h3 className="font-semibold mb-4 text-sm" style={{ color: 'var(--muted)' }}>RECENT REPOS</h3>
             <div className="space-y-2">
               {(data.repos || []).slice(0, 5).map(repo => (
                 <div key={repo.name} className="flex items-center justify-between">
@@ -185,16 +185,16 @@ export default function GitHubPage() {
                     target="_blank"
                     rel="noreferrer"
                     className="flex items-center gap-2 text-sm hover:underline"
-                    style={{ color: '#3b6dfb' }}
+                    style={{ color: 'var(--accent)' }}
                   >
                     <Code2 size={13} />
                     {repo.name}
                   </a>
                   <div className="flex items-center gap-2">
                     {repo.language && (
-                      <span className="text-xs" style={{ color: '#566082' }}>{repo.language}</span>
+                      <span className="text-xs" style={{ color: 'var(--subtle)' }}>{repo.language}</span>
                     )}
-                    <div className="flex items-center gap-1 text-xs" style={{ color: '#facc15' }}>
+                    <div className="flex items-center gap-1 text-xs" style={{ color: 'var(--warning)' }}>
                       <Star size={11} />
                       {repo.stars}
                     </div>

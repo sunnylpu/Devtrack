@@ -25,13 +25,13 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           position="top-right"
           toastOptions={{
             style: {
-              background: '#1c2236',
-              color: '#e2e8f0',
-              border: '1px solid #2a3250',
+              background: 'var(--surface-2)',
+              color: 'var(--text)',
+              border: '1px solid var(--border)',
               fontSize: '14px',
             },
-            success: { iconTheme: { primary: '#4ade80', secondary: '#1c2236' } },
-            error: { iconTheme: { primary: '#f87171', secondary: '#1c2236' } },
+            success: { iconTheme: { primary: 'var(--success)', secondary: 'var(--surface-2)' } },
+            error: { iconTheme: { primary: 'var(--danger)', secondary: 'var(--surface-2)' } },
           }}
         />
       </BrowserRouter>

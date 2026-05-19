@@ -4,9 +4,9 @@ import { useAuthStore } from '../store/authStore';
 import toast from 'react-hot-toast';
 
 const MODES = {
-  work: { label: 'Focus', duration: 25, color: '#3b6dfb', icon: Crosshair },
-  short: { label: 'Short Break', duration: 5, color: '#4ade80', icon: Coffee },
-  long: { label: 'Long Break', duration: 15, color: '#a78bfa', icon: Coffee },
+  work: { label: 'Focus', duration: 25, color: 'var(--accent)', icon: Crosshair },
+  short: { label: 'Short Break', duration: 5, color: 'var(--success)', icon: Coffee },
+  long: { label: 'Long Break', duration: 15, color: 'var(--accent)', icon: Coffee },
 };
 
 export default function FocusPage() {
@@ -75,12 +75,12 @@ export default function FocusPage() {
   const dashOffset = circumference - (progress / 100) * circumference;
 
   return (
-    <div className="p-8 flex flex-col items-center min-h-screen" style={{ background: '#0a0c18' }}>
-      <h1 className="text-2xl font-bold mb-2 self-start" style={{ color: '#e2e8f0' }}>Focus Mode</h1>
-      <p className="text-sm mb-10 self-start" style={{ color: '#566082' }}>Pomodoro-powered deep work sessions</p>
+    <div className="p-8 flex flex-col items-center min-h-screen" style={{ background: 'var(--bg)' }}>
+      <h1 className="text-2xl font-bold mb-2 self-start" style={{ color: 'var(--text)' }}>Focus Mode</h1>
+      <p className="text-sm mb-10 self-start" style={{ color: 'var(--subtle)' }}>Pomodoro-powered deep work sessions</p>
 
       {/* Mode selector */}
-      <div className="flex gap-2 mb-12 p-1 rounded-xl" style={{ background: '#141827', border: '1px solid #2a3250' }}>
+      <div className="flex gap-2 mb-12 p-1 rounded-xl" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
         {Object.entries(MODES).map(([key, val]) => (
           <button
             key={key}
@@ -88,7 +88,7 @@ export default function FocusPage() {
             className="px-5 py-2.5 rounded-lg text-sm font-semibold transition-all"
             style={{
               background: mode === key ? val.color : 'transparent',
-              color: mode === key ? 'white' : '#566082',
+              color: mode === key ? 'white' : 'var(--subtle)',
             }}
           >
             {val.label}
@@ -102,7 +102,7 @@ export default function FocusPage() {
           {/* Background circle */}
           <circle
             cx="140" cy="140" r="120"
-            fill="none" stroke="#1c2236" strokeWidth="8"
+            fill="none" stroke="var(--surface-2)" strokeWidth="8"
           />
           {/* Progress circle */}
           <circle
@@ -121,7 +121,7 @@ export default function FocusPage() {
         <div className="absolute flex flex-col items-center">
           <div
             className="text-6xl font-bold tracking-tight mb-1"
-            style={{ color: '#e2e8f0', fontFamily: "'JetBrains Mono', monospace" }}
+            style={{ color: 'var(--text)', fontFamily: "'JetBrains Mono', monospace" }}
           >
             {mins}:{secs}
           </div>
@@ -136,11 +136,11 @@ export default function FocusPage() {
         <button
           onClick={reset}
           className="w-12 h-12 rounded-full flex items-center justify-center transition-all"
-          style={{ background: '#1c2236', border: '1px solid #2a3250' }}
-          onMouseEnter={e => e.currentTarget.style.borderColor = '#3b6dfb'}
-          onMouseLeave={e => e.currentTarget.style.borderColor = '#2a3250'}
+          style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}
+          onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--accent)'}
+          onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border)'}
         >
-          <RotateCcw size={18} style={{ color: '#566082' }} />
+          <RotateCcw size={18} style={{ color: 'var(--subtle)' }} />
         </button>
 
         <button
@@ -159,7 +159,7 @@ export default function FocusPage() {
 
         <button
           className="w-12 h-12 rounded-full flex items-center justify-center"
-          style={{ background: '#1c2236', border: '1px solid #2a3250', color: '#566082', cursor: 'default' }}
+          style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--subtle)', cursor: 'default' }}
         >
           <Timer size={18} />
         </button>
@@ -168,17 +168,17 @@ export default function FocusPage() {
       {/* Stats */}
       <div className="flex gap-6">
         {[
-          { label: 'Sessions Today', value: sessions, color: '#3b6dfb' },
-          { label: 'Focus Minutes', value: totalFocusMin, color: '#4ade80' },
-          { label: 'Minutes Remaining', value: Math.ceil(timeLeft / 60), color: '#facc15' },
+          { label: 'Sessions Today', value: sessions, color: 'var(--accent)' },
+          { label: 'Focus Minutes', value: totalFocusMin, color: 'var(--success)' },
+          { label: 'Minutes Remaining', value: Math.ceil(timeLeft / 60), color: 'var(--warning)' },
         ].map(({ label, value, color }) => (
           <div
             key={label}
             className="text-center px-6 py-4 rounded-2xl"
-            style={{ background: '#141827', border: '1px solid #2a3250' }}
+            style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
           >
             <div className="text-2xl font-bold mb-1" style={{ color }}>{value}</div>
-            <div className="text-xs" style={{ color: '#566082' }}>{label}</div>
+            <div className="text-xs" style={{ color: 'var(--subtle)' }}>{label}</div>
           </div>
         ))}
       </div>
@@ -186,10 +186,10 @@ export default function FocusPage() {
       {/* Tips */}
       <div
         className="mt-8 max-w-md text-center p-5 rounded-2xl"
-        style={{ background: 'rgba(59,109,251,0.05)', border: '1px solid rgba(59,109,251,0.1)' }}
+        style={{ background: 'var(--accent-soft)', border: '1px solid var(--accent-soft)' }}
       >
-        <p className="text-sm" style={{ color: '#566082' }}>
-          💡 <strong style={{ color: '#94a3b8' }}>Tip:</strong> After 4 focus sessions, take a 15-minute long break.
+        <p className="text-sm" style={{ color: 'var(--subtle)' }}>
+          💡 <strong style={{ color: 'var(--muted)' }}>Tip:</strong> After 4 focus sessions, take a 15-minute long break.
           This is the classic Pomodoro technique for sustained productivity.
         </p>
       </div>

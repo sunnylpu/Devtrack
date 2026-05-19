@@ -36,7 +36,7 @@ const AuthRoute = ({ children }) => {
 };
 
 function App() {
-  const { fetchMe, isAuthenticated } = useAuthStore();
+  const { fetchMe, isAuthenticated, user } = useAuthStore();
 
   useEffect(() => {
     fetchMe();
@@ -50,6 +50,11 @@ function App() {
     }
     return () => {};
   }, [isAuthenticated]);
+
+  useEffect(() => {
+    const theme = user?.preferences?.theme === 'light' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = theme;
+  }, [user?.preferences?.theme]);
 
   return (
     <ErrorBoundary>

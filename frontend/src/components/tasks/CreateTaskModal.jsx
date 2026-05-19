@@ -27,9 +27,9 @@ export default function CreateTaskModal({ onClose, onCreate }) {
   };
 
   const inputStyle = {
-    background: '#1c2236',
-    border: '1px solid #2a3250',
-    color: '#e2e8f0',
+    background: 'var(--surface-2)',
+    border: '1px solid var(--border)',
+    color: 'var(--text)',
     width: '100%',
     padding: '10px 16px',
     borderRadius: '12px',
@@ -44,13 +44,13 @@ export default function CreateTaskModal({ onClose, onCreate }) {
         onClick={e => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-5">
-          <h3 className="text-lg font-bold" style={{ color: '#e2e8f0' }}>New Task</h3>
-          <button onClick={onClose} style={{ color: '#566082' }}><X size={18} /></button>
+          <h3 className="text-lg font-bold" style={{ color: 'var(--text)' }}>New Task</h3>
+          <button onClick={onClose} style={{ color: 'var(--subtle)' }}><X size={18} /></button>
         </div>
 
         <div className="space-y-4">
           <div>
-            <label className="block text-xs font-medium mb-1.5" style={{ color: '#94a3b8' }}>Title *</label>
+            <label className="block text-xs font-medium mb-1.5" style={{ color: 'var(--muted)' }}>Title *</label>
             <input
               value={title}
               onChange={e => setTitle(e.target.value)}
@@ -62,7 +62,7 @@ export default function CreateTaskModal({ onClose, onCreate }) {
           </div>
 
           <div>
-            <label className="block text-xs font-medium mb-1.5" style={{ color: '#94a3b8' }}>Description</label>
+            <label className="block text-xs font-medium mb-1.5" style={{ color: 'var(--muted)' }}>Description</label>
             <textarea
               value={description}
               onChange={e => setDescription(e.target.value)}
@@ -74,7 +74,7 @@ export default function CreateTaskModal({ onClose, onCreate }) {
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium mb-1.5" style={{ color: '#94a3b8' }}>Status</label>
+              <label className="block text-xs font-medium mb-1.5" style={{ color: 'var(--muted)' }}>Status</label>
               <select
                 value={status}
                 onChange={e => setStatus(e.target.value)}
@@ -86,7 +86,7 @@ export default function CreateTaskModal({ onClose, onCreate }) {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium mb-1.5" style={{ color: '#94a3b8' }}>Priority</label>
+              <label className="block text-xs font-medium mb-1.5" style={{ color: 'var(--muted)' }}>Priority</label>
               <select
                 value={priority}
                 onChange={e => setPriority(e.target.value)}
@@ -100,7 +100,7 @@ export default function CreateTaskModal({ onClose, onCreate }) {
           </div>
 
           <div>
-            <label className="block text-xs font-medium mb-1.5" style={{ color: '#94a3b8' }}>Tags (comma separated)</label>
+            <label className="block text-xs font-medium mb-1.5" style={{ color: 'var(--muted)' }}>Tags (comma separated)</label>
             <input
               value={tags}
               onChange={e => setTags(e.target.value)}
@@ -110,7 +110,7 @@ export default function CreateTaskModal({ onClose, onCreate }) {
           </div>
 
           <div>
-            <label className="block text-xs font-medium mb-1.5" style={{ color: '#94a3b8' }}>Deadline</label>
+            <label className="block text-xs font-medium mb-1.5" style={{ color: 'var(--muted)' }}>Deadline</label>
             <input
               type="date"
               value={deadline}
@@ -121,13 +121,13 @@ export default function CreateTaskModal({ onClose, onCreate }) {
         </div>
 
         <div className="flex gap-3 mt-6">
-          <button onClick={onClose} className="flex-1 py-2.5 rounded-xl text-sm" style={{ background: '#1c2236', color: '#566082' }}>
+          <button onClick={onClose} className="flex-1 py-2.5 rounded-xl text-sm" style={{ background: 'var(--surface-2)', color: 'var(--subtle)' }}>
             Cancel
           </button>
           <button
             onClick={handleSubmit}
             className="flex-1 py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-1"
-            style={{ background: 'linear-gradient(135deg, #3b6dfb, #7c3aed)', color: 'white' }}
+            style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-strong))', color: 'white' }}
           >
             <Plus size={16} /> Create Task
           </button>

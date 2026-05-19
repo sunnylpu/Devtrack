@@ -66,7 +66,7 @@ export function debounce(fn, delay = 300) {
  * Generate a color from a string (deterministic)
  */
 export function stringToColor(str) {
-  const colors = ['#3b6dfb', '#7c3aed', '#4ade80', '#fb923c', '#f87171', '#facc15', '#22d3ee', '#f472b6'];
+  const colors = ['var(--accent)', 'var(--accent-strong)', 'var(--success)', 'var(--warning)', 'var(--danger)', 'var(--warning)', 'var(--accent-2)', '#f472b6'];
   let hash = 0;
   for (let i = 0; i < (str || '').length; i++) {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);

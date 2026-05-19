@@ -20,7 +20,7 @@ export default function RegisterPage() {
     setIsLoading(true);
     try {
       await register(name, email, password);
-      toast.success('Account created! Welcome to DevTrack Pro 🎉');
+      toast.success('Account created! Welcome to DevTrack Pro');
       navigate('/dashboard');
     } catch (err) {
       toast.error(err.response?.data?.message || 'Registration failed');
@@ -29,75 +29,58 @@ export default function RegisterPage() {
     }
   };
 
-  const inputStyle = {
-    background: '#1c2236', border: '1px solid #2a3250', color: '#e2e8f0',
-  };
-
   return (
-    <div className="min-h-screen flex items-center justify-center p-4" style={{ background: '#0a0c18' }}>
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 60% 50% at 50% 0%, rgba(124,58,237,0.08) 0%, transparent 70%)' }}
-      />
-
-      <div className="w-full max-w-md animate-fade-in">
-        <div className="flex items-center justify-center gap-3 mb-10">
-          <div
-            className="w-11 h-11 rounded-2xl flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg, #3b6dfb, #7c3aed)', boxShadow: '0 0 30px rgba(124,58,237,0.4)' }}
-          >
+    <div className="auth-page auth-page-purple">
+      <div className="auth-shell animate-fade-in">
+        <div className="auth-brand">
+          <div className="auth-logo">
             <Zap size={22} color="white" />
           </div>
-          <div>
-            <h1 className="text-xl font-bold" style={{ color: '#e2e8f0' }}>DevTrack <span className="gradient-text">Pro</span></h1>
-          </div>
+          <h1>DevTrack <span className="gradient-text">Pro</span></h1>
         </div>
 
-        <div className="rounded-2xl p-8" style={{ background: '#141827', border: '1px solid #2a3250' }}>
-          <div className="flex items-center gap-2 mb-2">
-            <UserPlus size={20} style={{ color: '#7c3aed' }} />
-            <h2 className="text-2xl font-bold" style={{ color: '#e2e8f0' }}>Create account</h2>
+        <div className="auth-card">
+          <div className="auth-heading auth-heading-row">
+            <UserPlus size={20} />
+            <div>
+              <h2>Create account</h2>
+              <p>Start with a fresh DevTrack Pro account.</p>
+            </div>
           </div>
-          <p className="mb-8 text-sm" style={{ color: '#566082' }}>Join the developer productivity revolution</p>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="auth-form">
             {[
-              { label: 'Full Name', value: name, setter: setName, type: 'text', placeholder: 'Sunny Tyagi' },
-              { label: 'Email address', value: email, setter: setEmail, type: 'email', placeholder: 'sunny@devtrack.com' },
-            ].map(({ label, value, setter, type, placeholder }) => (
-              <div key={label}>
-                <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>{label}</label>
+              { id: 'register-name', label: 'Full name', value: name, setter: setName, type: 'text', placeholder: 'Sunny Tyagi', autoComplete: 'name' },
+              { id: 'register-email', label: 'Email address', value: email, setter: setEmail, type: 'email', placeholder: 'you@example.com', autoComplete: 'email' },
+            ].map(({ id, label, value, setter, type, placeholder, autoComplete }) => (
+              <div className="auth-field" key={id}>
+                <label htmlFor={id}>{label}</label>
                 <input
+                  id={id}
                   type={type}
                   value={value}
                   onChange={e => setter(e.target.value)}
                   placeholder={placeholder}
-                  className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-all duration-200"
-                  style={inputStyle}
-                  onFocus={e => e.target.style.borderColor = '#7c3aed'}
-                  onBlur={e => e.target.style.borderColor = '#2a3250'}
+                  autoComplete={autoComplete}
                 />
               </div>
             ))}
 
-            <div>
-              <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>Password</label>
-              <div className="relative">
+            <div className="auth-field">
+              <label htmlFor="register-password">Password</label>
+              <div className="auth-password">
                 <input
+                  id="register-password"
                   type={showPass ? 'text' : 'password'}
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   placeholder="Min. 6 characters"
-                  className="w-full px-4 py-3 pr-12 rounded-xl text-sm outline-none transition-all duration-200"
-                  style={inputStyle}
-                  onFocus={e => e.target.style.borderColor = '#7c3aed'}
-                  onBlur={e => e.target.style.borderColor = '#2a3250'}
+                  autoComplete="new-password"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPass(!showPass)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2"
-                  style={{ color: '#566082' }}
+                  aria-label={showPass ? 'Hide password' : 'Show password'}
                 >
                   {showPass ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
@@ -107,23 +90,18 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 px-6 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-200"
-              style={{
-                background: 'linear-gradient(135deg, #7c3aed, #3b6dfb)',
-                color: 'white',
-                opacity: isLoading ? 0.7 : 1,
-              }}
+              className="auth-submit"
             >
               {isLoading
-                ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                ? <span className="auth-spinner" />
                 : <><ArrowRight size={16} /> Create Account</>
               }
             </button>
           </form>
 
-          <p className="mt-6 text-center text-sm" style={{ color: '#566082' }}>
+          <p className="auth-switch">
             Already have an account?{' '}
-            <Link to="/login" style={{ color: '#7c3aed' }} className="font-semibold hover:underline">Sign in</Link>
+            <Link to="/login">Sign in</Link>
           </p>
         </div>
       </div>

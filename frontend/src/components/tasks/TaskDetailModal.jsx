@@ -6,10 +6,10 @@ import toast from 'react-hot-toast';
 import { format } from 'date-fns';
 
 const PRIORITY_STYLES = {
-  urgent: { bg: 'rgba(248,113,113,0.15)', color: '#f87171', label: 'Urgent' },
-  high: { bg: 'rgba(251,146,60,0.15)', color: '#fb923c', label: 'High' },
-  medium: { bg: 'rgba(250,204,21,0.15)', color: '#facc15', label: 'Medium' },
-  low: { bg: 'rgba(74,222,128,0.15)', color: '#4ade80', label: 'Low' },
+  urgent: { bg: 'rgba(248,113,113,0.15)', color: 'var(--danger)', label: 'Urgent' },
+  high: { bg: 'rgba(251,146,60,0.15)', color: 'var(--warning)', label: 'High' },
+  medium: { bg: 'rgba(250,204,21,0.15)', color: 'var(--warning)', label: 'Medium' },
+  low: { bg: 'rgba(74,222,128,0.15)', color: 'var(--success)', label: 'Low' },
 };
 
 const STATUS_OPTIONS = ['todo', 'in-progress', 'review', 'completed'];
@@ -72,9 +72,9 @@ export default function TaskDetailModal({ task, onClose }) {
   };
 
   const inputStyle = {
-    background: '#1c2236',
-    border: '1px solid #2a3250',
-    color: '#e2e8f0',
+    background: 'var(--surface-2)',
+    border: '1px solid var(--border)',
+    color: 'var(--text)',
     width: '100%',
     padding: '10px 16px',
     borderRadius: '12px',
@@ -86,44 +86,44 @@ export default function TaskDetailModal({ task, onClose }) {
     <div className="modal-overlay" onClick={onClose}>
       <div
         className="w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-2xl p-6 animate-scale-in"
-        style={{ background: '#141827', border: '1px solid #2a3250' }}
+        style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-bold" style={{ color: '#e2e8f0' }}>Task Details</h2>
-          <button onClick={onClose} style={{ color: '#566082' }}><X size={20} /></button>
+          <h2 className="text-lg font-bold" style={{ color: 'var(--text)' }}>Task Details</h2>
+          <button onClick={onClose} style={{ color: 'var(--subtle)' }}><X size={20} /></button>
         </div>
 
         {/* Title */}
         <div className="mb-4">
-          <label className="block text-xs font-medium mb-1.5" style={{ color: '#94a3b8' }}>Title</label>
+          <label className="block text-xs font-medium mb-1.5" style={{ color: 'var(--muted)' }}>Title</label>
           <input
             value={title}
             onChange={e => setTitle(e.target.value)}
             style={inputStyle}
-            onFocus={e => e.target.style.borderColor = '#3b6dfb'}
-            onBlur={e => e.target.style.borderColor = '#2a3250'}
+            onFocus={e => e.target.style.borderColor = 'var(--accent)'}
+            onBlur={e => e.target.style.borderColor = 'var(--border)'}
           />
         </div>
 
         {/* Description */}
         <div className="mb-4">
-          <label className="block text-xs font-medium mb-1.5" style={{ color: '#94a3b8' }}>Description</label>
+          <label className="block text-xs font-medium mb-1.5" style={{ color: 'var(--muted)' }}>Description</label>
           <textarea
             value={description}
             onChange={e => setDescription(e.target.value)}
             rows={3}
             style={{ ...inputStyle, resize: 'vertical' }}
-            onFocus={e => e.target.style.borderColor = '#3b6dfb'}
-            onBlur={e => e.target.style.borderColor = '#2a3250'}
+            onFocus={e => e.target.style.borderColor = 'var(--accent)'}
+            onBlur={e => e.target.style.borderColor = 'var(--border)'}
           />
         </div>
 
         {/* Status + Priority row */}
         <div className="grid grid-cols-2 gap-4 mb-6">
           <div>
-            <label className="block text-xs font-medium mb-1.5" style={{ color: '#94a3b8' }}>
+            <label className="block text-xs font-medium mb-1.5" style={{ color: 'var(--muted)' }}>
               <Flag size={11} className="inline mr-1" />Status
             </label>
             <div className="flex flex-wrap gap-1.5">
@@ -133,9 +133,9 @@ export default function TaskDetailModal({ task, onClose }) {
                   onClick={() => setStatus(s)}
                   className="px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-all"
                   style={{
-                    background: status === s ? 'rgba(59,109,251,0.2)' : '#1c2236',
-                    color: status === s ? '#3b6dfb' : '#566082',
-                    border: status === s ? '1px solid #3b6dfb' : '1px solid #2a3250',
+                    background: status === s ? 'var(--accent-panel)' : 'var(--surface-2)',
+                    color: status === s ? 'var(--accent)' : 'var(--subtle)',
+                    border: status === s ? '1px solid var(--accent)' : '1px solid var(--border)',
                   }}
                 >
                   {s.replace('-', ' ')}
@@ -144,7 +144,7 @@ export default function TaskDetailModal({ task, onClose }) {
             </div>
           </div>
           <div>
-            <label className="block text-xs font-medium mb-1.5" style={{ color: '#94a3b8' }}>
+            <label className="block text-xs font-medium mb-1.5" style={{ color: 'var(--muted)' }}>
               <Tag size={11} className="inline mr-1" />Priority
             </label>
             <div className="flex flex-wrap gap-1.5">
@@ -154,9 +154,9 @@ export default function TaskDetailModal({ task, onClose }) {
                   onClick={() => setPriority(key)}
                   className="px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-all"
                   style={{
-                    background: priority === key ? val.bg : '#1c2236',
-                    color: priority === key ? val.color : '#566082',
-                    border: priority === key ? `1px solid ${val.color}` : '1px solid #2a3250',
+                    background: priority === key ? val.bg : 'var(--surface-2)',
+                    color: priority === key ? val.color : 'var(--subtle)',
+                    border: priority === key ? `1px solid ${val.color}` : '1px solid var(--border)',
                   }}
                 >
                   {val.label}
@@ -169,7 +169,7 @@ export default function TaskDetailModal({ task, onClose }) {
         {/* Subtasks */}
         <div className="mb-6">
           <div className="flex items-center justify-between mb-3">
-            <label className="text-xs font-medium" style={{ color: '#94a3b8' }}>
+            <label className="text-xs font-medium" style={{ color: 'var(--muted)' }}>
               <CheckCircle2 size={11} className="inline mr-1" />
               Subtasks ({task.subtasks?.length || 0})
             </label>
@@ -177,7 +177,7 @@ export default function TaskDetailModal({ task, onClose }) {
               onClick={handleAIBreakdown}
               disabled={aiLoading}
               className="flex items-center gap-1 text-xs px-3 py-1 rounded-lg font-medium transition-all"
-              style={{ background: 'rgba(167,139,250,0.15)', color: '#a78bfa' }}
+              style={{ background: 'rgba(167,139,250,0.15)', color: 'var(--accent)' }}
             >
               <Sparkles size={12} />
               {aiLoading ? 'Thinking...' : 'AI Breakdown'}
@@ -190,7 +190,7 @@ export default function TaskDetailModal({ task, onClose }) {
               <div
                 key={sub._id}
                 className="flex items-center gap-2 px-3 py-2 rounded-lg"
-                style={{ background: '#1c2236' }}
+                style={{ background: 'var(--surface-2)' }}
               >
                 <button
                   onClick={() => toggleSubtask.mutate({ subtaskId: sub._id, completed: !sub.completed })}
@@ -198,13 +198,13 @@ export default function TaskDetailModal({ task, onClose }) {
                 >
                   <CheckCircle2
                     size={16}
-                    style={{ color: sub.completed ? '#4ade80' : '#2a3250' }}
+                    style={{ color: sub.completed ? 'var(--success)' : 'var(--border)' }}
                   />
                 </button>
                 <span
                   className="text-sm flex-1"
                   style={{
-                    color: sub.completed ? '#566082' : '#e2e8f0',
+                    color: sub.completed ? 'var(--subtle)' : 'var(--text)',
                     textDecoration: sub.completed ? 'line-through' : 'none',
                   }}
                 >
@@ -217,16 +217,16 @@ export default function TaskDetailModal({ task, onClose }) {
           {/* AI suggested subtasks */}
           {aiSubtasks && aiSubtasks.length > 0 && (
             <div className="mb-3 p-3 rounded-xl" style={{ background: 'rgba(167,139,250,0.05)', border: '1px solid rgba(167,139,250,0.15)' }}>
-              <p className="text-xs font-medium mb-2" style={{ color: '#a78bfa' }}>
+              <p className="text-xs font-medium mb-2" style={{ color: 'var(--accent)' }}>
                 <Sparkles size={11} className="inline mr-1" />AI Suggestions
               </p>
               <div className="space-y-1">
                 {aiSubtasks.map((sub, i) => (
-                  <div key={i} className="flex items-center gap-2 text-sm" style={{ color: '#94a3b8' }}>
+                  <div key={i} className="flex items-center gap-2 text-sm" style={{ color: 'var(--muted)' }}>
                     <button
                       onClick={() => handleAcceptAISubtask(sub)}
                       className="text-xs px-2 py-0.5 rounded font-medium"
-                      style={{ background: 'rgba(59,109,251,0.15)', color: '#3b6dfb' }}
+                      style={{ background: 'var(--accent-soft)', color: 'var(--accent)' }}
                     >
                       + Add
                     </button>
@@ -250,7 +250,7 @@ export default function TaskDetailModal({ task, onClose }) {
             <button
               onClick={handleAddSubtask}
               className="px-3 rounded-xl"
-              style={{ background: 'rgba(59,109,251,0.15)', color: '#3b6dfb' }}
+              style={{ background: 'var(--accent-soft)', color: 'var(--accent)' }}
             >
               <Plus size={16} />
             </button>
@@ -259,14 +259,14 @@ export default function TaskDetailModal({ task, onClose }) {
 
         {/* Meta info */}
         {task.createdAt && (
-          <div className="flex items-center gap-4 text-xs mb-6" style={{ color: '#566082' }}>
+          <div className="flex items-center gap-4 text-xs mb-6" style={{ color: 'var(--subtle)' }}>
             <span className="flex items-center gap-1">
               <Calendar size={11} />
               Created {format(new Date(task.createdAt), 'MMM d, yyyy')}
             </span>
             {task.deadline && (
               <span className="flex items-center gap-1">
-                <Flag size={11} style={{ color: '#fb923c' }} />
+                <Flag size={11} style={{ color: 'var(--warning)' }} />
                 Due {format(new Date(task.deadline), 'MMM d, yyyy')}
               </span>
             )}
@@ -278,7 +278,7 @@ export default function TaskDetailModal({ task, onClose }) {
           <button
             onClick={onClose}
             className="px-5 py-2.5 rounded-xl text-sm"
-            style={{ background: '#1c2236', border: '1px solid #2a3250', color: '#94a3b8' }}
+            style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--muted)' }}
           >
             Cancel
           </button>
@@ -286,7 +286,7 @@ export default function TaskDetailModal({ task, onClose }) {
             onClick={handleSave}
             disabled={updateMutation.isPending}
             className="px-6 py-2.5 rounded-xl text-sm font-semibold"
-            style={{ background: 'linear-gradient(135deg, #3b6dfb, #7c3aed)', color: 'white' }}
+            style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-strong))', color: 'white' }}
           >
             {updateMutation.isPending ? 'Saving...' : 'Save Changes'}
           </button>

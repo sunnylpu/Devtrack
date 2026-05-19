@@ -18,6 +18,7 @@ export const useAuthStore = create(
           user: data.data.user,
           accessToken: data.data.accessToken,
           isAuthenticated: true,
+          isLoading: false,
         });
         return data.data.user;
       },
@@ -28,6 +29,7 @@ export const useAuthStore = create(
           user: data.data.user,
           accessToken: data.data.accessToken,
           isAuthenticated: true,
+          isLoading: false,
         });
         return data.data.user;
       },
@@ -38,14 +40,22 @@ export const useAuthStore = create(
         } catch {
           // ignore errors
         }
-        set({ user: null, accessToken: null, isAuthenticated: false });
+        set({ user: null, accessToken: null, isAuthenticated: false, isLoading: false });
       },
 
       fetchMe: async () => {
+        const token = get().accessToken;
+        if (!token) {
+          set({ user: null, isAuthenticated: false, isLoading: false });
+          return;
+        }
+
         try {
           const { data } = await api.get('/auth/me');
+          if (get().accessToken !== token) return;
           set({ user: data.data.user, isAuthenticated: true, isLoading: false });
         } catch {
+          if (get().accessToken !== token) return;
           set({ user: null, isAuthenticated: false, isLoading: false });
         }
       },

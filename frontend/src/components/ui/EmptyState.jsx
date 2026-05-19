@@ -4,14 +4,14 @@ export default function EmptyState({ icon: Icon, title, description, action }) {
       {Icon && (
         <div
           className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6"
-          style={{ background: 'rgba(59,109,251,0.06)', border: '1px solid rgba(59,109,251,0.1)' }}
+          style={{ background: 'var(--accent-soft)', border: '1px solid var(--accent-soft)' }}
         >
-          <Icon size={36} style={{ color: '#2a3250' }} />
+          <Icon size={36} style={{ color: 'var(--border)' }} />
         </div>
       )}
-      <h3 className="text-lg font-bold mb-2" style={{ color: '#e2e8f0' }}>{title}</h3>
+      <h3 className="text-lg font-bold mb-2" style={{ color: 'var(--text)' }}>{title}</h3>
       {description && (
-        <p className="text-sm max-w-sm mx-auto mb-6" style={{ color: '#566082' }}>{description}</p>
+        <p className="text-sm max-w-sm mx-auto mb-6" style={{ color: 'var(--subtle)' }}>{description}</p>
       )}
       {action}
     </div>
