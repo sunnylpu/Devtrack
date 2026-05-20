@@ -39,6 +39,9 @@ export const githubService = {
   getHeatmap: () => api.get('/github/heatmap'),
   connect: () => { window.location.href = '/api/github/connect'; },
   disconnect: () => api.delete('/github/disconnect'),
+  getProfileByUsername: (username) => api.get(`/github/profile/${username}`),
+  getReposByUsername: (username, page = 1) => api.get(`/github/repos/${username}`, { params: { page } }),
+  getRecentByUsername: (username) => api.get(`/github/recent/${username}`),
 };
 
 // ─── AI ───────────────────────────────────────────────────────────────────────
