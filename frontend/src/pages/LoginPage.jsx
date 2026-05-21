@@ -39,7 +39,7 @@ export default function LoginPage() {
 
         <div className="auth-card">
           <div className="auth-heading">
-            <h2>this side Aastha</h2>
+            <h2>  Aastha hu me</h2>
             <p>Sign in with the account you created on this app.</p>
           </div>
 
