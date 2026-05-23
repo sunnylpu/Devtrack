@@ -1,3 +1,20 @@
+/*
+ * DevTrack Pro - CI/CD Pipeline
+ * 
+ * DevTrack Pro is an AI-Powered Developer Productivity Platform featuring:
+ * - Kanban-style task management
+ * - Markdown notes
+ * - Pomodoro focus timer
+ * - Habit tracking
+ * - GitHub integration
+ * - AI assistant (OpenAI)
+ * 
+ * Stack: Node.js (Backend), React/Vite (Frontend), MongoDB, Redis, Docker Compose
+ * 
+ * This Jenkins pipeline automates the checkout, dependency installation, 
+ * building of the frontend, building of Docker images, and local deployment 
+ * using docker-compose.
+ */
 pipeline {
     agent any
 
