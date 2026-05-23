@@ -19,7 +19,7 @@ pipeline {
     agent any
 
     environment {
-        // You can define environment variables here that will be accessible in all stages
+        // You      can define environment variables here that will be accessible in all stages
         // Example: DOCKER_IMAGE_PREFIX = 'my-registry.com/devtrack-pro'
         NODE_ENV = 'production'
     }
