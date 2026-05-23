@@ -29,6 +29,7 @@ pipeline {
             steps {
                 checkout scm
                 echo "Repository checked out successfully."
+                echo "Testing pipeline trigger from new commit!"
             }
         }
 
