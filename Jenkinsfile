@@ -2,11 +2,12 @@ pipeline {
     agent any
 
     environment {
+        // You can define environment variables here that will be accessible in all stages
+        // Example: DOCKER_IMAGE_PREFIX = 'my-registry.com/devtrack-pro'
         NODE_ENV = 'production'
     }
 
     stages {
-
         stage('Checkout') {
             steps {
                 checkout scm
@@ -17,7 +18,10 @@ pipeline {
         stage('Install Backend Dependencies') {
             steps {
                 dir('backend') {
-                    sh 'npm ci'
+                    // Assuming Node.js is available on the Jenkins agent
+                    sh 'npm install'
+                    // Uncomment the next line if you have a test script in package.json
+                    // sh 'npm run test'
                 }
             }
         }
@@ -25,31 +29,45 @@ pipeline {
         stage('Build Frontend') {
             steps {
                 dir('frontend') {
-                    sh 'npm ci'
+                    sh 'npm install'
                     sh 'npm run build'
+                    // Uncomment the next line if you have a test script in package.json
+                    // sh 'npm run test'
                 }
             }
         }
 
-        stage('Docker Build & Deploy') {
+        stage('Docker Build') {
             steps {
-                echo "Building and deploying containers..."
-                sh 'docker compose up -d --build'
+                // Ensure Docker and docker-compose are available on the agent
+                echo "Building Docker images for all services..."
+                sh 'docker-compose build'
+            }
+        }
+
+        stage('Deploy (Docker Compose Up)') {
+            steps {
+                echo "Deploying application via Docker Compose..."
+                // Take down existing containers if any
+                sh 'docker-compose down'
+                // Start the containers in detached mode
+                sh 'docker-compose up -d'
+                echo "Application deployed successfully!"
             }
         }
     }
 
     post {
-        success {
-            echo 'Deployment successful!'
-        }
-
-        failure {
-            echo 'Deployment failed!'
-        }
-
         always {
-            echo 'Pipeline completed.'
+            echo "Pipeline execution completed."
+            // You can add steps to run regardless of the build outcome (e.g., cleaning up workspace)
+            // cleanWs()
+        }
+        success {
+            echo "The build and deployment were successful."
+        }
+        failure {
+            echo "The build or deployment failed. Please check the logs."
         }
     }
 }
