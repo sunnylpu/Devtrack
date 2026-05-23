@@ -5,6 +5,11 @@ pipeline {
         // You can define environment variables here that will be accessible in all stages
         // Example: DOCKER_IMAGE_PREFIX = 'my-registry.com/devtrack-pro'
         NODE_ENV = 'production'
+        PATH = "/opt/homebrew/bin:/usr/local/bin:${env.PATH}"
+    }
+
+    triggers {
+        githubPush()
     }
 
     stages {
