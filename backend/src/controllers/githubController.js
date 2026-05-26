@@ -86,7 +86,11 @@ const getActivity = async (req, res, next) => {
       axios.get(`https://api.github.com/users/${user.github.username}/events?per_page=30`, { headers }),
     ]);
 
-    const repos = reposRes.data.map((r) => ({
+    // Guard: GitHub may return error object instead of array
+    const reposData = Array.isArray(reposRes.data) ? reposRes.data : [];
+    const eventsData = Array.isArray(eventsRes.data) ? eventsRes.data : [];
+
+    const repos = reposData.map((r) => ({
       name: r.name,
       url: r.html_url,
       language: r.language,
@@ -94,19 +98,19 @@ const getActivity = async (req, res, next) => {
       updatedAt: r.updated_at,
     }));
 
-    // Extract push events / commit activity
-    const pushEvents = eventsRes.data.filter((e) => e.type === 'PushEvent');
+    // Extract push events — payload.commits can be undefined on force-pushes
+    const pushEvents = eventsData.filter((e) => e.type === 'PushEvent');
     const recentCommits = pushEvents.flatMap((e) =>
-      e.payload.commits.map((c) => ({
+      (e.payload?.commits || []).map((c) => ({
         message: c.message,
-        repo: e.repo.name,
+        repo: e.repo?.name,
         date: e.created_at,
       }))
     ).slice(0, 20);
 
     // Language distribution from repos
     const langMap = {};
-    reposRes.data.forEach((r) => {
+    reposData.forEach((r) => {
       if (r.language) langMap[r.language] = (langMap[r.language] || 0) + 1;
     });
     const languages = Object.entries(langMap)
