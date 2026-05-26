@@ -1,6 +1,21 @@
+# Environment files
 .env
-.DS_Store
+.env.local
+.env.*
+
+# Node modules
 node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# Build output
 dist/
 build/
-.vscode/
+.next/
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
