@@ -17,12 +17,18 @@ api.interceptors.request.use((config) => {
 });
 
 // Response interceptor - handle 401 / token refresh
+// Skip refresh for auth routes to prevent infinite loop
+const SKIP_REFRESH_URLS = ['/auth/refresh', '/auth/logout'];
+
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
+    const url = originalRequest?.url || '';
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    const isAuthRoute = SKIP_REFRESH_URLS.some((u) => url.includes(u));
+
+    if (error.response?.status === 401 && !originalRequest._retry && !isAuthRoute) {
       originalRequest._retry = true;
       try {
         const { data } = await axios.post('/api/auth/refresh', {}, { withCredentials: true });
@@ -31,7 +37,8 @@ api.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${newToken}`;
         return api(originalRequest);
       } catch {
-        useAuthStore.getState().logout();
+        useAuthStore.getState().setAccessToken(null);
+        window.location.href = '/login';
         return Promise.reject(error);
       }
     }

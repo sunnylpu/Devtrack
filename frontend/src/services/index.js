@@ -1,4 +1,5 @@
 import api from './api';
+import { useAuthStore } from '../store/authStore';
 
 // ─── Tasks ────────────────────────────────────────────────────────────────────
 export const taskService = {
@@ -37,7 +38,10 @@ export const analyticsService = {
 export const githubService = {
   getActivity: () => api.get('/github/activity'),
   getHeatmap: () => api.get('/github/heatmap'),
-  connect: () => { window.location.href = '/api/github/connect'; },
+  connect: () => {
+    const token = useAuthStore.getState().accessToken;
+    window.location.href = `/api/github/connect?token=${token}`;
+  },
   disconnect: () => api.delete('/github/disconnect'),
   getProfileByUsername: (username) => api.get(`/github/profile/${username}`),
   getReposByUsername: (username, page = 1) => api.get(`/github/repos/${username}`, { params: { page } }),
