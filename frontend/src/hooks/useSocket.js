@@ -6,6 +6,7 @@ import { useAuthStore } from '../store/authStore';
  * useSocket - hook to subscribe to socket.io events
  * @param {string} event - event name to listen to
  * @param {Function} handler - callback when event fires
+ * //this is comment
  */
 export const useSocket = (event, handler) => {
   const { isAuthenticated } = useAuthStore();
