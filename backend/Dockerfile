@@ -11,10 +11,9 @@ COPY . .
 # Create logs directory
 RUN mkdir -p logs
 
-# Non-root user for security
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
-RUN chown -R appuser:appgroup /app
-USER appuser
+# Use built-in node user
+RUN chown -R node:node /app
+USER node
 
 EXPOSE 5001
 

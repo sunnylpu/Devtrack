@@ -7,6 +7,7 @@ import { useAuthStore } from '../store/authStore';
  * @param {string} event - event name to listen to
  * @param {Function} handler - callback when event fires
  * //this is comment
+ * this is commnets too
  */
 export const useSocket = (event, handler) => {
   const { isAuthenticated } = useAuthStore();
