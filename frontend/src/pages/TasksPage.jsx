@@ -27,7 +27,7 @@ function TaskCard({ task, onStatusChange, onDelete }) {
 
   return (
     <div
-      className="rounded-xl p-4 mb-3 cursor-pointer card-hover"
+      className="group rounded-xl p-4 mb-3 cursor-pointer card-hover"
       style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}
     >
       <div className="flex items-start justify-between mb-2">
@@ -36,10 +36,8 @@ function TaskCard({ task, onStatusChange, onDelete }) {
         </h4>
         <button
           onClick={() => onDelete(task._id)}
-          className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded hover:bg-red-500/10"
+          className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-lg hover:bg-red-500/10 hover:text-red-400"
           style={{ color: 'var(--subtle)' }}
-          onMouseEnter={e => e.currentTarget.style.color = 'var(--danger)'}
-          onMouseLeave={e => e.currentTarget.style.color = 'var(--subtle)'}
         >
           <Trash2 size={13} />
         </button>
@@ -94,10 +92,8 @@ function TaskCard({ task, onStatusChange, onDelete }) {
             const next = { 'todo': 'in-progress', 'in-progress': 'review', 'review': 'completed' };
             onStatusChange(task._id, next[task.status]);
           }}
-          className="mt-3 w-full text-xs py-1.5 rounded-lg flex items-center justify-center gap-1 transition-all"
-          style={{ background: 'var(--border)', color: 'var(--subtle)' }}
-          onMouseEnter={e => { e.currentTarget.style.background = 'var(--accent-soft)'; e.currentTarget.style.color = 'var(--accent)'; }}
-          onMouseLeave={e => { e.currentTarget.style.background = 'var(--border)'; e.currentTarget.style.color = 'var(--subtle)'; }}
+          className="mt-3 w-full text-xs py-1.5 rounded-lg flex items-center justify-center gap-1 transition-all hover:bg-[var(--accent-soft)] hover:text-[var(--accent)]"
+          style={{ background: 'var(--surface-3)', color: 'var(--subtle)' }}
         >
           <ChevronRight size={12} /> Move Forward
         </button>
@@ -289,7 +285,7 @@ export default function TasksPage() {
   };
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col flex-1 overflow-hidden h-full">
       {/* Header */}
       <div className="px-8 py-6 border-b flex items-center justify-between" style={{ borderColor: 'var(--border)' }}>
         <div>
@@ -306,7 +302,7 @@ export default function TasksPage() {
       </div>
 
       {/* Board */}
-      <div className="flex-1 overflow-x-auto px-8 py-6">
+      <div className="flex-1 overflow-x-auto overflow-y-auto px-8 py-6">
         {isLoading ? (
           <div className="flex gap-5">
             {COLUMNS.map(c => (

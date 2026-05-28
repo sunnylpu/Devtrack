@@ -10,7 +10,7 @@ function NoteCard({ note, isSelected, onClick, onDelete, onPin }) {
   return (
     <div
       onClick={onClick}
-      className={`p-4 rounded-xl cursor-pointer card-hover group transition-all ${isSelected ? 'border-[var(--accent)]' : ''}`}
+      className="p-4 rounded-xl cursor-pointer card-hover group transition-all"
       style={{
         background: isSelected ? 'var(--accent-soft)' : 'var(--surface-2)',
         border: `1px solid ${isSelected ? 'var(--accent)' : 'var(--border)'}`,
@@ -117,9 +117,9 @@ export default function NotesPage() {
     : notes;
 
   return (
-    <div className="flex h-screen">
+    <div className="flex flex-1 h-full overflow-hidden">
       {/* Note list sidebar */}
-      <div className="w-80 flex-shrink-0 flex flex-col border-r" style={{ borderColor: 'var(--border)', background: 'var(--sidebar)' }}>
+      <div className="w-72 lg:w-80 flex-shrink-0 flex flex-col border-r" style={{ borderColor: 'var(--border)', background: 'var(--sidebar)' }}>
         <div className="p-4 border-b" style={{ borderColor: 'var(--border)' }}>
           <div className="flex items-center justify-between mb-3">
             <h2 className="font-bold" style={{ color: 'var(--text)' }}>Notes</h2>

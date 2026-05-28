@@ -45,28 +45,6 @@ function Field({ label, children }) {
   );
 }
 
-function StyledInput({ ...props }) {
-  const [focused, setFocused] = useState(false);
-  return (
-    <input
-      {...props}
-      style={{
-        background: 'var(--surface-2)',
-        border: `1px solid ${focused ? 'var(--accent)' : 'var(--border)'}`,
-        boxShadow: focused ? '0 0 0 3px var(--accent-soft)' : 'none',
-        color: 'var(--text)',
-        width: '100%',
-        padding: '10px 14px',
-        borderRadius: '12px',
-        fontSize: '14px',
-        outline: 'none',
-        transition: 'all 0.2s ease',
-      }}
-      onFocus={e => { setFocused(true); props.onFocus?.(e); }}
-      onBlur={e => { setFocused(false); props.onBlur?.(e); }}
-    />
-  );
-}
 
 export default function SettingsPage() {
   const { user, updateUser } = useAuthStore();
@@ -103,10 +81,10 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="p-6 md:p-8 max-w-2xl">
+    <div className="p-8 max-w-2xl">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold" style={{ color: 'var(--text)' }}>Settings</h1>
-        <p className="text-sm mt-1" style={{ color: 'var(--subtle)' }}>Manage your account and preferences</p>
+        <h1 className="page-title">Settings</h1>
+        <p className="page-subtitle" style={{ marginBottom: 0 }}>Manage your account and preferences</p>
       </div>
 
       <div className="space-y-5">
@@ -153,7 +131,7 @@ export default function SettingsPage() {
           </div>
 
           <Field label="FULL NAME">
-            <StyledInput value={name} onChange={e => setName(e.target.value)} placeholder="Your full name" />
+            <input className="input" value={name} onChange={e => setName(e.target.value)} placeholder="Your full name" />
           </Field>
         </Section>
 
@@ -241,7 +219,8 @@ export default function SettingsPage() {
         <Section icon={Lock} title="Security" subtitle="Change your account password">
           <div className="space-y-4">
             <Field label="CURRENT PASSWORD">
-              <StyledInput
+              <input
+                className="input"
                 type="password"
                 value={currentPass}
                 onChange={e => setCurrentPass(e.target.value)}
@@ -249,7 +228,8 @@ export default function SettingsPage() {
               />
             </Field>
             <Field label="NEW PASSWORD">
-              <StyledInput
+              <input
+                className="input"
                 type="password"
                 value={newPass}
                 onChange={e => setNewPass(e.target.value)}

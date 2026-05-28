@@ -316,12 +316,12 @@ export default function HabitsPage() {
   const today = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
 
   return (
-    <div className="p-6 md:p-8">
+    <div className="p-8">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold" style={{ color: 'var(--text)' }}>Habit Tracker</h1>
-          <p className="text-sm mt-1" style={{ color: 'var(--subtle)' }}>{today}</p>
+          <h1 className="page-title">Habit Tracker</h1>
+          <p className="page-subtitle" style={{ marginBottom: 0 }}>{today}</p>
         </div>
         <button
           onClick={() => setShowModal(true)}

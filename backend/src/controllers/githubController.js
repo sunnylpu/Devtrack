@@ -306,4 +306,66 @@ const getPublicRecent = async (req, res, next) => {
   }
 };
 
-module.exports = { connectGitHub, githubCallback, getActivity, getHeatmap, disconnectGitHub, getPublicProfile, getPublicRepos, getPublicRecent };
+/**
+ * @route   GET /api/github/repos/:username/:repo/commits
+ * @access  Public
+ * Fetch commit history for a specific public repo
+ */
+const getRepoCommits = async (req, res, next) => {
+  try {
+    const { username, repo } = req.params;
+    const page = parseInt(req.query.page || '1', 10);
+    if (!username || !repo) return res.status(400).json({ success: false, message: 'Username and repo are required' });
+
+    const headers = {};
+    if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
+
+    const [commitsRes, repoRes] = await Promise.all([
+      axios.get(
+        `https://api.github.com/repos/${encodeURIComponent(username)}/${encodeURIComponent(repo)}/commits?per_page=20&page=${page}`,
+        { headers }
+      ),
+      axios.get(
+        `https://api.github.com/repos/${encodeURIComponent(username)}/${encodeURIComponent(repo)}`,
+        { headers }
+      ),
+    ]);
+
+    const commits = (commitsRes.data || []).map((c) => ({
+      sha: c.sha?.slice(0, 7),
+      fullSha: c.sha,
+      message: c.commit?.message?.split('\n')[0] || '',
+      author: c.commit?.author?.name || '',
+      authorAvatar: c.author?.avatar_url || '',
+      authorLogin: c.author?.login || '',
+      date: c.commit?.author?.date,
+      url: c.html_url,
+    }));
+
+    const r = repoRes.data;
+    const repoInfo = {
+      name: r.name,
+      fullName: r.full_name,
+      description: r.description || '',
+      url: r.html_url,
+      language: r.language,
+      stars: r.stargazers_count,
+      forks: r.forks_count,
+      watchers: r.watchers_count,
+      openIssues: r.open_issues_count,
+      defaultBranch: r.default_branch,
+      createdAt: r.created_at,
+      updatedAt: r.updated_at,
+      license: r.license?.name || null,
+      topics: r.topics || [],
+      size: r.size,
+    };
+
+    return sendSuccess(res, { username, repo, repoInfo, commits, page });
+  } catch (error) {
+    if (error.response?.status === 404) return res.status(404).json({ success: false, message: 'Repository not found' });
+    next(error);
+  }
+};
+
+module.exports = { connectGitHub, githubCallback, getActivity, getHeatmap, disconnectGitHub, getPublicProfile, getPublicRepos, getPublicRecent, getRepoCommits };

@@ -74,11 +74,11 @@ export default function FocusPage() {
   const dashOffset   = circumference - (progress / 100) * circumference;
 
   return (
-    <div className="p-6 md:p-8 min-h-screen" style={{ background: 'var(--bg)' }}>
+    <div className="p-8">
       {/* Page header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold" style={{ color: 'var(--text)' }}>Focus Mode</h1>
-        <p className="text-sm mt-1" style={{ color: 'var(--subtle)' }}>Pomodoro-powered deep work sessions</p>
+        <h1 className="page-title">Focus Mode</h1>
+        <p className="page-subtitle" style={{ marginBottom: 0 }}>Pomodoro-powered deep work sessions</p>
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 items-start">

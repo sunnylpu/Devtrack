@@ -99,7 +99,7 @@ export default function DashboardPage() {
   return (
     <div className="page animate-fade-in">
       {/* Header */}
-      <div style={{ marginBottom: 32 }}>
+      <div className="mb-8">
         <h1 className="page-title">
           {greeting()}, <span className="gradient-text">{user?.name || 'Developer'}</span> 👋
         </h1>
@@ -109,12 +109,12 @@ export default function DashboardPage() {
       </div>
 
       {/* Stat Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 20, marginBottom: 32 }}>
+      <div className="grid grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
         {isLoading
           ? [1,2,3,4].map(i => <div key={i} className="skeleton" style={{ height: 130, borderRadius: 16 }} />)
           : statCards.map(({ label, value, sub, icon: Icon, gradient, iconBg, iconColor, glow, badge, badgeColor }) => (
               <div key={label} className={`card ${glow}`} style={{ background: gradient }}>
-                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 16 }}>
+                <div className="flex items-start justify-between mb-4">
                   <div className="stat-icon" style={{ background: iconBg }}>
                     <Icon size={20} style={{ color: iconColor, position: 'relative', zIndex: 1 }} />
                   </div>
@@ -135,7 +135,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Charts Row */}
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 20, marginBottom: 32 }}>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-8">
         {/* Area Chart */}
         <div className="card">
           <p className="section-title">TASK COMPLETION TREND — LAST 30 DAYS</p>
@@ -197,7 +197,7 @@ export default function DashboardPage() {
       </div>
 
       {/* AI Row */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         {/* AI Summary */}
         <div className="card card-purple">
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>

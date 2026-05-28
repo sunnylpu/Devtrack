@@ -46,6 +46,7 @@ export const githubService = {
   getProfileByUsername: (username) => api.get(`/github/profile/${username}`),
   getReposByUsername: (username, page = 1) => api.get(`/github/repos/${username}`, { params: { page } }),
   getRecentByUsername: (username) => api.get(`/github/recent/${username}`),
+  getRepoCommits: (username, repo, page = 1) => api.get(`/github/repos/${username}/${repo}/commits`, { params: { page } }),
 };
 
 // ─── AI ───────────────────────────────────────────────────────────────────────
