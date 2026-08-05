@@ -167,8 +167,8 @@ function CreateHabitModal({ onClose, onCreate }) {
   const [description, setDescription] = useState('');
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 p-4" style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(4px)' }}>
-      <div className="w-full max-w-md rounded-2xl p-6 animate-fade-in" style={{ background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: '0 24px 80px rgba(0,0,0,0.4)' }}>
+    <div className="modal-overlay">
+      <div className="modal-panel modal-panel-lg animate-fade-in">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h3 className="text-lg font-bold" style={{ color: 'var(--text)' }}>New Habit</h3>
@@ -188,17 +188,13 @@ function CreateHabitModal({ onClose, onCreate }) {
             value={name}
             onChange={e => setName(e.target.value)}
             placeholder="e.g. Morning run, Read 20 pages..."
-            className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-all"
-            style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--text)' }}
-            onFocus={e => e.target.style.borderColor = 'var(--accent)'}
-            onBlur={e => e.target.style.borderColor = 'var(--border)'}
+            className="input text-sm"
           />
           <input
             value={description}
             onChange={e => setDescription(e.target.value)}
             placeholder="Description (optional)"
-            className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-all"
-            style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--text)' }}
+            className="input text-sm"
           />
 
           <div>
@@ -265,8 +261,7 @@ function CreateHabitModal({ onClose, onCreate }) {
         <div className="flex gap-3 mt-6">
           <button
             onClick={onClose}
-            className="flex-1 py-3 rounded-xl text-sm font-semibold"
-            style={{ background: 'var(--surface-2)', color: 'var(--muted)', border: '1px solid var(--border)' }}
+            className="btn-ghost flex-1 py-3"
           >
             Cancel
           </button>
@@ -275,8 +270,7 @@ function CreateHabitModal({ onClose, onCreate }) {
               if (name) { onCreate({ name, icon, color, frequency, description }); onClose(); }
               else toast.error('Habit name is required');
             }}
-            className="flex-1 py-3 rounded-xl text-sm font-semibold"
-            style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-strong))', color: 'white', boxShadow: '0 4px 16px var(--accent-panel)' }}
+            className="btn-primary flex-1 py-3 justify-center"
           >
             Create Habit
           </button>
@@ -316,7 +310,7 @@ export default function HabitsPage() {
   const today = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
 
   return (
-    <div className="p-8">
+    <div className="page" style={{ height: '100%', overflowY: 'auto' }}>
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>

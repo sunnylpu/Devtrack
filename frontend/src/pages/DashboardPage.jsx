@@ -97,7 +97,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="page animate-fade-in">
+    <div className="page animate-fade-in" style={{ height: '100%', overflowY: 'auto' }}>
       {/* Header */}
       <div className="mb-8">
         <h1 className="page-title">
@@ -109,7 +109,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Stat Cards */}
-      <div className="grid grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
         {isLoading
           ? [1,2,3,4].map(i => <div key={i} className="skeleton" style={{ height: 130, borderRadius: 16 }} />)
           : statCards.map(({ label, value, sub, icon: Icon, gradient, iconBg, iconColor, glow, badge, badgeColor }) => (
@@ -135,9 +135,9 @@ export default function DashboardPage() {
       </div>
 
       {/* Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-5 mb-8">
         {/* Area Chart */}
-        <div className="card">
+        <div className="card card-chart lg:col-span-3">
           <p className="section-title">TASK COMPLETION TREND — LAST 30 DAYS</p>
           {trendData.length > 0 ? (
             <ResponsiveContainer width="100%" height={220}>
@@ -166,7 +166,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Pie Chart */}
-        <div className="card">
+        <div className="card card-chart lg:col-span-2">
           <p className="section-title">TASK STATUS</p>
           {statusData.some(s => s.value > 0) ? (
             <ResponsiveContainer width="100%" height={220}>

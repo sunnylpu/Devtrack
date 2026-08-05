@@ -81,7 +81,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="p-8 max-w-2xl">
+    <div className="page" style={{ maxWidth: '640px', height: '100%', overflowY: 'auto' }}>
       <div className="mb-8">
         <h1 className="page-title">Settings</h1>
         <p className="page-subtitle" style={{ marginBottom: 0 }}>Manage your account and preferences</p>
@@ -185,23 +185,18 @@ export default function SettingsPage() {
               <div key={label}>
                 <label className="block text-xs font-semibold mb-2 tracking-wide" style={{ color: 'var(--muted)' }}>{label}</label>
                 <div className="relative">
-                  <input
+                <input
                     type="number"
                     value={value}
                     onChange={e => setter(parseInt(e.target.value) || min)}
                     min={min}
                     max={max}
+                    className="input"
                     style={{
-                      background: 'var(--surface-2)',
-                      border: `1px solid var(--border)`,
-                      color: 'var(--text)',
-                      width: '100%',
-                      padding: '10px 14px',
-                      borderRadius: '12px',
-                      fontSize: '18px',
+                      fontSize: '20px',
                       fontWeight: '700',
-                      outline: 'none',
                       textAlign: 'center',
+                      borderColor: 'var(--border)',
                     }}
                     onFocus={e => { e.target.style.borderColor = color; e.target.style.boxShadow = `0 0 0 3px ${color}22`; }}
                     onBlur={e => { e.target.style.borderColor = 'var(--border)'; e.target.style.boxShadow = 'none'; }}

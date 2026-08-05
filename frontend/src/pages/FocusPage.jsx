@@ -74,7 +74,7 @@ export default function FocusPage() {
   const dashOffset   = circumference - (progress / 100) * circumference;
 
   return (
-    <div className="p-8">
+    <div className="page" style={{ height: '100%', overflowY: 'auto' }}>
       {/* Page header */}
       <div className="mb-8">
         <h1 className="page-title">Focus Mode</h1>
@@ -97,7 +97,7 @@ export default function FocusPage() {
               <button
                 key={key}
                 onClick={() => switchMode(key)}
-                className="flex-1 py-2.5 rounded-xl text-xs font-semibold transition-all"
+            className="flex-1 py-2.5 rounded-xl text-xs font-semibold transition-all min-w-max px-3"
                 style={mode === key ? {
                   background: val.color,
                   color: 'white',
@@ -124,7 +124,7 @@ export default function FocusPage() {
                 opacity: running ? 1 : 0.4,
               }}
             />
-            <svg width="260" height="260" viewBox="0 0 260 260">
+            <svg width="260" height="260" viewBox="0 0 260 260" style={{ display: 'block', overflow: 'visible', maxWidth: '100%' }}>
               <circle cx="130" cy="130" r="110" fill="none" stroke="var(--surface-2)" strokeWidth="10" />
               <circle
                 cx="130" cy="130" r="110"

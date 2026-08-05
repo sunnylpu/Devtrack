@@ -5,6 +5,7 @@ import { Plus, Search, Folder, Pin, Trash2, FileText, X } from 'lucide-react';
 import MDEditor from '@uiw/react-md-editor';
 import toast from 'react-hot-toast';
 import { format } from 'date-fns';
+import { useAuthStore } from '../store/authStore';
 
 function NoteCard({ note, isSelected, onClick, onDelete, onPin }) {
   return (
@@ -54,7 +55,8 @@ export default function NotesPage() {
   const [showCreate, setShowCreate] = useState(false);
   const [newTitle, setNewTitle] = useState('');
   const [newFolder, setNewFolder] = useState('General');
-  const queryClient = useQueryClient();
+  const { user } = useAuthStore();
+  const colorMode = user?.preferences?.theme === 'light' ? 'light' : 'dark';
 
   const { data: notesData, isLoading } = useQuery({
     queryKey: ['notes'],
@@ -137,8 +139,8 @@ export default function NotesPage() {
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search notes..."
-              className="w-full pl-9 pr-3 py-2 rounded-lg text-sm outline-none"
-              style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--text)' }}
+              className="input"
+              style={{ paddingLeft: 36, fontSize: 13 }}
             />
           </div>
         </div>
@@ -167,7 +169,7 @@ export default function NotesPage() {
       </div>
 
       {/* Editor */}
-      <div className="flex-1 flex flex-col" data-color-mode="dark">
+      <div className="flex-1 flex flex-col" data-color-mode={colorMode}>
         {selected && selectedNoteData ? (
           <>
             <div className="px-6 py-4 border-b flex items-center justify-between" style={{ borderColor: 'var(--border)' }}>
@@ -185,13 +187,13 @@ export default function NotesPage() {
                 Save
               </button>
             </div>
-            <div className="flex-1 overflow-auto">
+            <div className="md-editor-wrap flex-1">
               <MDEditor
                 value={editContent}
                 onChange={setEditContent}
                 height="100%"
-                style={{ borderRadius: 0, background: 'var(--bg)' }}
                 preview="live"
+                data-color-mode={colorMode}
               />
             </div>
           </>
@@ -206,34 +208,31 @@ export default function NotesPage() {
         )}
       </div>
 
-      {/* Create modal */}
       {showCreate && (
-        <div className="fixed inset-0 flex items-center justify-center z-50" style={{ background: 'rgba(0,0,0,0.7)' }}>
-          <div className="w-full max-w-sm rounded-2xl p-6 animate-fade-in" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-bold" style={{ color: 'var(--text)' }}>New Note</h3>
-              <button onClick={() => setShowCreate(false)} style={{ color: 'var(--subtle)' }}><X size={18} /></button>
+        <div className="modal-overlay">
+          <div className="modal-panel animate-fade-in" style={{ maxWidth: 380 }}>
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="font-bold text-lg" style={{ color: 'var(--text)' }}>New Note</h3>
+              <button onClick={() => setShowCreate(false)} className="p-1 rounded-lg" style={{ color: 'var(--subtle)' }}><X size={18} /></button>
             </div>
             <div className="space-y-3">
               <input
                 value={newTitle}
                 onChange={e => setNewTitle(e.target.value)}
                 placeholder="Note title..."
-                className="w-full px-4 py-3 rounded-xl text-sm outline-none"
-                style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--text)' }}
+                className="input"
+                autoFocus
               />
               <input
                 value={newFolder}
                 onChange={e => setNewFolder(e.target.value)}
                 placeholder="Folder name"
-                className="w-full px-4 py-3 rounded-xl text-sm outline-none"
-                style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', color: 'var(--text)' }}
+                className="input"
               />
             </div>
             <button
               onClick={() => { if(newTitle) createMutation.mutate({ title: newTitle, folder: newFolder, content: `# ${newTitle}\n\n` }); }}
-              className="mt-4 w-full py-2.5 rounded-xl font-semibold text-sm"
-              style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-strong))', color: 'white' }}
+              className="btn-primary mt-5 w-full justify-center"
             >
               Create Note
             </button>

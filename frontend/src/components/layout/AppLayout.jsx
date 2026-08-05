@@ -60,7 +60,7 @@ export default function AppLayout() {
           ${collapsed ? 'w-[72px]' : 'w-[260px]'}
           ${mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         `}
-        style={{ background: 'var(--sidebar)', borderColor: 'var(--border)' }}
+        style={{ background: 'var(--sidebar)', borderColor: 'var(--border)', willChange: 'transform' }}
       >
         {/* Logo */}
         <div

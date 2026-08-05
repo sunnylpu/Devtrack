@@ -137,10 +137,10 @@ function AddTaskModal({ onClose, onAdd }) {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 p-4" style={{ background: 'rgba(0,0,0,0.7)' }}>
+    <div className="modal-overlay">
       <div
-        className="w-full max-w-md rounded-2xl p-6 animate-fade-in"
-        style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
+        className="modal-panel animate-fade-in"
+        style={{ maxWidth: 480 }}
       >
         <h3 className="text-lg font-bold mb-5" style={{ color: 'var(--text)' }}>Create New Task</h3>
         <div className="space-y-4">
@@ -285,7 +285,7 @@ export default function TasksPage() {
   };
 
   return (
-    <div className="flex flex-col flex-1 overflow-hidden h-full">
+    <div className="flex flex-col flex-1 overflow-hidden" style={{ height: '100%' }}>
       {/* Header */}
       <div className="px-8 py-6 border-b flex items-center justify-between" style={{ borderColor: 'var(--border)' }}>
         <div>
@@ -302,7 +302,7 @@ export default function TasksPage() {
       </div>
 
       {/* Board */}
-      <div className="flex-1 overflow-x-auto overflow-y-auto px-8 py-6">
+      <div className="flex-1 overflow-x-auto overflow-y-auto px-8 py-6 pb-8">
         {isLoading ? (
           <div className="flex gap-5">
             {COLUMNS.map(c => (
