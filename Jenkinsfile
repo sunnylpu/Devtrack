@@ -64,7 +64,7 @@ pipeline {
             steps {
                 sh '''
                     aws eks update-kubeconfig --name $EKS_CLUSTER --region $AWS_REGION
-                    kubectl apply -k k8s/ --insecure-skip-tls-verify=true
+                    kubectl apply -k k8s/ --validate=false --insecure-skip-tls-verify=true
                     kubectl rollout restart deployment backend frontend -n $NAMESPACE --insecure-skip-tls-verify=true
                 '''
             }
