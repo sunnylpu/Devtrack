@@ -1,33 +1,48 @@
-node {
-    stage('Checkout') {
-        checkout scm
+pipeline {
+    agent any
+
+    environment {
+        NODE_VERSION = '20'
     }
 
-    stage('Build and Test') {
-        parallel(
-            'Backend Tests': {
-                dir('backend') {
-                    sh 'npm ci'
-                    sh 'echo "No linter configured yet"'
-                    sh 'npx jest --runInBand --forceExit'
+    stages {
+        stage('Build and Test') {
+            parallel {
+                stage('Backend Tests') {
+                    steps {
+                        dir('backend') {
+                            sh 'npm ci'
+                            sh 'echo "No linter configured yet"'
+                            sh 'npx jest --runInBand --forceExit'
+                        }
+                    }
                 }
-            },
-            'Frontend Build': {
-                dir('frontend') {
-                    sh 'npm ci'
-                    sh 'npm run build'
-                    archiveArtifacts artifacts: 'dist/**/*', allowEmptyArchive: true
+
+                stage('Frontend Build') {
+                    steps {
+                        dir('frontend') {
+                            sh 'npm ci'
+                            sh 'npm run build'
+                        }
+                    }
+                    post {
+                        success {
+                            archiveArtifacts artifacts: 'frontend/dist/**/*', allowEmptyArchive: true
+                        }
+                    }
                 }
             }
-        )
-    }
-
-    stage('Build Docker Images') {
-        dir('backend') {
-            sh 'docker build -t devtrack-pro/backend:latest .'
         }
-        dir('frontend') {
-            sh 'docker build -t devtrack-pro/frontend:latest .'
+
+        stage('Build Docker Images') {
+            steps {
+                dir('backend') {
+                    sh 'docker build -t devtrack-pro/backend:latest .'
+                }
+                dir('frontend') {
+                    sh 'docker build -t devtrack-pro/frontend:latest .'
+                }
+            }
         }
     }
 }
