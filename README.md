@@ -61,8 +61,10 @@ devtrack-pro/
 │   └── nginx.conf        # SPA routing config
 │
 ├── nginx/                # Reverse proxy config
+├── k8s/                  # Kubernetes manifests (Deployments, Services, Ingress, Secrets)
+├── terraform/            # AWS IaC (VPC, EKS Cluster, ECR Repositories)
 ├── docker-compose.yml    # Full stack orchestration
-├── .github/workflows/    # CI/CD pipeline
+├── .github/workflows/    # CI/CD pipelines (Local CI & AWS EKS Deployment)
 └── API_DOCS.md           # REST API documentation
 ```
 
@@ -128,6 +130,72 @@ docker compose up -d --build
 ```
 
 This starts: MongoDB, Redis, Backend API, Frontend (nginx), and Reverse Proxy.
+
+---
+
+## ☸️ Kubernetes Deployment
+
+Deploy DevTrack Pro on any Kubernetes cluster (Minikube, Kind, k3s, or cloud K8s):
+
+```bash
+# Apply all Kubernetes manifests in order
+kubectl apply -k k8s/
+
+# Verify running pods and services
+kubectl get pods -n devtrack
+kubectl get svc -n devtrack
+
+# Verify ingress routing
+kubectl get ingress -n devtrack
+```
+
+### Manifest Structure:
+- `k8s/namespace.yaml` — Dedicated `devtrack` namespace
+- `k8s/configmap-secret.yaml` — Environment variables & sensitive credentials
+- `k8s/mongodb.yaml` — MongoDB Stateful Deployment with PVC (10Gi)
+- `k8s/redis.yaml` — Redis Cache Deployment with PVC (2Gi)
+- `k8s/backend.yaml` — Backend API Deployment (2 replicas, health probes)
+- `k8s/frontend.yaml` — Frontend SPA Deployment (2 replicas, health probes)
+- `k8s/ingress.yaml` — Ingress controller routing `/api`, `/socket.io`, and `/`
+
+---
+
+## ☁️ AWS Cloud Deployment (Terraform + EKS + ECR)
+
+Provision AWS infrastructure using Infrastructure as Code (IaC) and deploy to EKS:
+
+### 1. Provision Infrastructure with Terraform
+
+```bash
+cd terraform
+
+# Initialize providers
+terraform init
+
+# Plan infrastructure changes
+terraform plan
+
+# Apply infrastructure creation (VPC, EKS Cluster, ECR repos)
+terraform apply
+```
+
+### 2. Configure Local `kubectl` for AWS EKS
+
+```bash
+aws eks update-kubeconfig --name devtrack-eks-cluster --region us-east-1
+```
+
+### 3. CI/CD Automated Deployment via GitHub Actions
+
+Set the following repository secrets in GitHub (`Settings -> Secrets and variables -> Actions`):
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+
+Pushing to `main` branch automatically triggers `.github/workflows/deploy-aws-eks.yml` to:
+1. Authenticate to AWS ECR
+2. Build and tag Docker container images with Git SHA
+3. Push images to Amazon ECR repositories (`devtrack-backend` & `devtrack-frontend`)
+4. Apply Kubernetes manifests to EKS cluster and monitor rollout status.
 
 ---
 

@@ -25,6 +25,9 @@ const { initQueues } = require('./services/queueService');
 const createApp = () => {
   const app = express();
 
+  // Trust reverse proxy (AWS ALB, Nginx, Ingress)
+  app.set('trust proxy', 1);
+
   // Connect to MongoDB
   connectDB();
 
@@ -36,8 +39,18 @@ const createApp = () => {
     crossOriginEmbedderPolicy: false,
   }));
 
+  const allowedOrigins = process.env.FRONTEND_URL
+    ? process.env.FRONTEND_URL.split(',').map((url) => url.trim())
+    : ['http://localhost:5173', 'http://localhost:8081', 'http://localhost:5001'];
+
   app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    origin: (origin, callback) => {
+      if (!origin || process.env.FRONTEND_URL === '*' || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      // Allow any origin if front & back are served through same reverse proxy or dynamic AWS host
+      return callback(null, true);
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],

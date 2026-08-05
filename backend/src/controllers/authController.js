@@ -4,6 +4,20 @@ const { sendSuccess, sendError } = require('../utils/response');
 const logger = require('../utils/logger');
 
 /**
+ * Get cookie options compatible with both HTTP (default AWS EC2/ALB without SSL)
+ * and HTTPS deployments.
+ */
+const getCookieOptions = (req) => {
+  const isSecure = process.env.COOKIE_SECURE === 'true' || (req && req.secure);
+  return {
+    httpOnly: true,
+    secure: isSecure,
+    sameSite: isSecure ? 'none' : 'lax',
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+  };
+};
+
+/**
  * @route   POST /api/auth/register
  * @access  Public
  */
@@ -29,12 +43,7 @@ const register = async (req, res, next) => {
     await user.save({ validateBeforeSave: false });
 
     // Set refresh token as HttpOnly cookie
-    res.cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-    });
+    res.cookie('refreshToken', refreshToken, getCookieOptions(req));
 
     logger.info(`New user registered: ${email}`);
 
@@ -86,12 +95,7 @@ const login = async (req, res, next) => {
     userWithTokens.lastSeen = new Date();
     await userWithTokens.save({ validateBeforeSave: false });
 
-    res.cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    res.cookie('refreshToken', refreshToken, getCookieOptions(req));
 
     // Remove password from response
     user.password = undefined;
@@ -144,12 +148,7 @@ const refresh = async (req, res, next) => {
     user.refreshTokens.push({ token: newRefreshToken });
     await user.save({ validateBeforeSave: false });
 
-    res.cookie('refreshToken', newRefreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    res.cookie('refreshToken', newRefreshToken, getCookieOptions(req));
 
     return sendSuccess(res, { accessToken: newAccessToken }, 'Token refreshed');
   } catch (error) {
@@ -172,7 +171,7 @@ const logout = async (req, res, next) => {
       await user.save({ validateBeforeSave: false });
     }
 
-    res.clearCookie('refreshToken');
+    res.clearCookie('refreshToken', getCookieOptions(req));
     return sendSuccess(res, {}, 'Logged out successfully');
   } catch (error) {
     next(error);
