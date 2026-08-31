@@ -201,17 +201,52 @@ Pushing to `main` branch automatically triggers `.github/workflows/deploy-aws-ek
 
 ## 🧪 Testing
 
+### 1. Backend Jest Unit Tests
+
+DevTrack Pro includes 12 comprehensive unit test suites covering all controllers, middleware, and utils (109+ tests):
+
 ```bash
 cd backend
-npm test              # Run all tests
+npm test              # Run all unit test suites
 npm run test:watch    # Watch mode
 ```
 
-**Current test coverage:**
-- `authController` — Register (duplicate/new), getMe
-- `taskController` — Create (success/failure)
-- `noteController` — Create, Delete, TogglePin
-- `habitController` — GetAll, Create, Delete
+**Unit Test Coverage:**
+- `authController` — Register, Login, Refresh, Logout, GetMe, UpdateProfile, ChangePassword
+- `taskController` — CRUD, Status transition, Subtasks, Kanban grouping, Reorder bulk write
+- `habitController` — GetHabits, CreateHabit, CheckIn, UpdateHabit, DeleteHabit, GetStats
+- `noteController` — CRUD, Search indexing, Folders, TogglePin
+- `analyticsController` — Dashboard metrics aggregation, Productivity trends
+- `aiController` — Task suggestions, AI breakdown, Weekly summaries, Productivity tips
+- `githubController` — OAuth connect/callback, Activity feeds, Contribution heatmap, Public repos/commits
+- `leetcodeController` — Public GraphQL profile, Calendar heatmap, Recent submissions, Connect/disconnect
+- `notificationController` — Pagination, Read marking, Read all, Delete
+- `authMiddleware` — Bearer headers, query token fallback, expired/invalid token handling, role authorization
+- `errorHandler` — ValidationError, CastError, duplicate key (11000), JWT errors, 404 notFound
+- `jwtUtil` — Token generation and signature verification for access and refresh tokens
+
+### 2. Selenium End-to-End (E2E) Tests
+
+The `e2e/` folder contains automated Selenium WebDriver tests implementing the **Page Object Model (POM)**:
+
+```bash
+cd e2e
+npm install
+
+# Run all E2E tests in headless Chrome
+npm run test:e2e:headless
+
+# Run all E2E tests with interactive Chrome window
+npm run test:e2e
+
+# Run individual specs
+npm run test:auth      # Auth & registration flow
+npm run test:dashboard # Dashboard & sidebar navigation
+npm run test:tasks     # Kanban board task creation & updates
+npm run test:habits    # Habit tracker & daily check-in
+npm run test:notes     # Notes creation & search
+npm run test:focus     # Pomodoro timer controls
+```
 
 ---
 

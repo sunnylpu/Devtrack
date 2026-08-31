@@ -1,0 +1,28 @@
+{
+  "name": "devtrack-pro-e2e",
+  "version": "1.0.0",
+  "description": "DevTrack Pro - Selenium End-to-End Test Suite",
+  "main": "runner.js",
+  "scripts": {
+    "test:e2e": "node runner.js",
+    "test:e2e:headless": "HEADLESS=true node runner.js",
+    "test:auth": "SPEC=01_auth node runner.js",
+    "test:dashboard": "SPEC=02_dashboard node runner.js",
+    "test:tasks": "SPEC=03_tasks node runner.js",
+    "test:habits": "SPEC=04_habits node runner.js",
+    "test:notes": "SPEC=05_notes node runner.js",
+    "test:focus": "SPEC=06_focus node runner.js"
+  },
+  "keywords": [
+    "selenium",
+    "e2e",
+    "testing",
+    "devtrack"
+  ],
+  "author": "DevTrack Pro",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "selenium-webdriver": "^4.27.0"
+  }
+}
